@@ -1,0 +1,88 @@
+Hallo....
+
+Main Menu:
+
+1) Spielen
+2) Fragen Hinzufügen
+3) Statistiken?
+4) Beenden
+
+Wähle eine Option: 
+
+--- Bei 1 ---
+
+Katerogien:
+
+0) Alle
+1) Geographie
+2) Geschichte
+3) ...
+4) ...
+
+Wähle ...:
+
+Wie viele Fragen möchstets du beantworten (max 10) ?
+
+
+Frage 1: 
+
+Fagldhlga?
+
+Antwort 1) 
+Antwort 2)
+Antwort 3)
+Antwort 4)
+
+Deine antwort?
+
+
+Deine Antwort war Richtig
+
+oder
+
+Deine Antwort war Falsch
+Richig wäre Antwort 1 gewesen
+
+
+
+Du hast 5 von 10 richtig beantowortet
+
+
+
+
+Hauptmenue:
+
+..
+
+
+
+--- Bei 2 ---
+
+
+Zu welcher Kategorie möchstets du eine Frage hinzufügen?
+
+
+
+Wähle Kategorie:
+
+
+Wie lautet die Frage
+
+Wie lautet die richtige Antwort
+
+möchstets du Antwortmöglichkeiten geben Y/N:
+
+
+Zusätzliche Antwortmöglichkeit 1
+Zusätzliche Antwortmöglichkeit 2
+Zusätzliche Antwortmöglichkeit 3
+
+
+Zusammenfassung
+
+Möchtest du das Speichern Y/N:
+
+
+Bestätigung
+
+
