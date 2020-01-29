@@ -8,7 +8,25 @@ public class Logic {
 
     public Logic()
     {
-        questions = JsonHelper.ReturnQuestionsandCategories();
+        //questions = JsonHelper.ReturnQuestionsandCategories(); //NotYetImplemented
+
+        questions = new HashMap<String, ArrayList<Question>>()
+        {
+            {
+                put("Geographie", new ArrayList<Question>() {
+                    {
+                        add( new Question("In welchem Land liegt Paris?", "Frankreich"));
+                        add( new Question("In welchem Land liegt London?", "UK"));
+                    }
+                });
+                put("Geschichte", new ArrayList<Question>(){
+                    {
+                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre"));
+                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela"));
+                    }}
+                );
+            }
+        };
         MainMenuChoices = new String[] {"Spielen", "Fragen hinzufuegen", "Statistiken", "Beenden"};
     }
 
@@ -46,6 +64,22 @@ public class Logic {
     }
 
     private void PlayQuiz()
+    {
+        var categories = questions.keySet().toArray(new String[questions.size()]);
+
+        System.out.println();
+        System.out.println("Sie befinden sich im Quiz-Modus");
+        System.out.println(HelperClass.createChoiceMenuString("Aus welcher Kategorie sollen Fragen gestellt werden?\nFuer einen Mix aus allen Kategorien schreiben Sie einfach '0'.", categories));
+
+        var categoryIndex = HelperClass.GetInputInt("Welche Kategorie (0 fuer Alle)? ", 0, categories.length);
+        categoryIndex = categoryIndex == 0 ? 0 : categoryIndex-1;
+
+        var numberOfQuestions = HelperClass.GetInputInt("Wieviele Fragen wollen Sie beantworten (max. 10)? ", 1, 10);
+
+        AskQuestions(categoryIndex == 0 ? "" : categories[categoryIndex], numberOfQuestions);
+    }
+
+    private void AskQuestions(String category, int numberOfQuestions)
     {
 
     }
