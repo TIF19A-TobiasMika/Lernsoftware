@@ -10,16 +10,16 @@ public class Logic {
     {
         //questions = JsonHelper.ReturnQuestionsandCategories(); //NotYetImplemented
 
-        questions = new HashMap<String, ArrayList<Question>>()
+        questions = new HashMap<>()
         {
             {
-                put("Geographie", new ArrayList<Question>() {
+                put("Geographie", new ArrayList<>() {
                     {
                         add( new Question("In welchem Land liegt Paris?", "Frankreich"));
                         add( new Question("In welchem Land liegt London?", "UK"));
                     }
                 });
-                put("Geschichte", new ArrayList<Question>(){
+                put("Geschichte", new ArrayList<>(){
                     {
                         add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre"));
                         add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela"));
@@ -34,7 +34,10 @@ public class Logic {
     {
         System.out.println("Hallo und herzlich willkommen zur Lernsoftware!");
 
-        MainMenuChoice();
+        while(true)
+        {
+            MainMenuChoice();
+        }
     }
 
     private void MainMenuChoice()
@@ -59,7 +62,6 @@ public class Logic {
                 break;
             case 4:
                 System.exit(0);
-
         }
     }
 
@@ -81,7 +83,7 @@ public class Logic {
 
     private void AskQuestions(String category, int numberOfQuestions)
     {
-
+        var questionSetForCategory = category.equals("") ? questions.values() : questions.get(category); //Need to improve functionality for useable output
     }
 
     private void AddQuestion()
@@ -91,7 +93,7 @@ public class Logic {
 
     private void ShowStatistics()
     {
-
+        System.out.println("This funtion is not implemented yet!");
     }
     private void ResetQuestions()
     {
