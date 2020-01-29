@@ -1,7 +1,9 @@
 public class Main
 {
+    private static Logic logic;
     public static void main(String[] args)
     {
-        HelperClass.GetInputInt("Bitte Zahl eingeben: ");
+        logic = new Logic();
+        logic.RunGame();
     }
 }
