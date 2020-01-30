@@ -9,6 +9,12 @@ public class Question {
         this.alternateAnswers = alternateAnswers;
     }
 
+    public Question(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+        this.alternateAnswers = null;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Frage: ");
