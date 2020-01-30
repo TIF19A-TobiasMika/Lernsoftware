@@ -11,15 +11,19 @@ public class Question {
 
     @Override
     public String toString() {
-        StringBuilder tmp = new StringBuilder("Question: ");
-        tmp.append(question);
-        tmp.append("\nAnswer: ");
-        tmp.append(answer);
-        tmp.append("\nAlternate Answers: ");
-        for (String str : alternateAnswers) {
-            tmp.append("\n  ");
-            tmp.append(str);
+        StringBuilder sb = new StringBuilder("Frage: ");
+        sb.append(question);
+        sb.append("\nAntwort: ");
+        sb.append(answer);
+        if(alternateAnswers != null) {
+            sb.append("\nAlternative Antworten: ");
+            for (String str : alternateAnswers) {
+                sb.append("\n  ");
+                sb.append(str);
+            }
+        } else {
+            sb.append("\nInput Frage");
         }
-        return tmp.toString();
+        return sb.toString();
     }
 }
