@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 public class HelperClass {
 
@@ -60,7 +57,6 @@ public class HelperClass {
             catch (Exception e)
             {
                 System.out.print("Invalid input. Please write a number: ");
-                continue;
             }
         }
     }
@@ -88,7 +84,6 @@ public class HelperClass {
             catch (Exception e)
             {
                 System.out.print("Invalid input. Please write a number: ");
-                continue;
             }
         }
     }
@@ -96,13 +91,12 @@ public class HelperClass {
     static Question [] GenerateRandomQuestions(int amount, ArrayList<Question> questionCollection)
     {
         Question [] randomQuestionArray = new Question[amount];
-        var randomQuestions = questionCollection;
 
-        Collections.shuffle(randomQuestions);
+        Collections.shuffle(questionCollection);
 
-        for(int i = 0; i < amount; i++)
+        for(var i = 0; i < amount; i++)
         {
-            randomQuestionArray[i] = randomQuestions.get(i);
+            randomQuestionArray[i] = questionCollection.get(i);
         }
 
         return randomQuestionArray;
@@ -113,10 +107,7 @@ public class HelperClass {
         ArrayList<String> answerList = new ArrayList<>();
         answerList.add(answer);
 
-        for(int i = 0; i<alternateAnswers.length; i++)
-        {
-            answerList.add(alternateAnswers[i]);
-        }
+        answerList.addAll(Arrays.asList(alternateAnswers));
 
         Collections.shuffle(answerList);
 
