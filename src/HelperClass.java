@@ -7,7 +7,7 @@ public class HelperClass {
 
     static Scanner scanner = new Scanner(System.in);
 
-    static String createChoiceMenuString(String title, String[] options) {
+    static String createChoiceMenuString(String title, String... options) {
         StringBuilder sb = new StringBuilder();
         sb.append(title);
         sb.append("\n");
