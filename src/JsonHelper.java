@@ -23,9 +23,8 @@ public class JsonHelper {
     }
 
     static ArrayList<Question> getQuestionsFromFile(File file) {
-        JsonReader jsonReader = null;
         try {
-            jsonReader = new JsonReader(new FileReader(file));
+            JsonReader jsonReader = new JsonReader(new FileReader(file));
             Gson gson = new Gson();
             return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {
             }.getType());
