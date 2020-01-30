@@ -90,4 +90,19 @@ public class HelperClass {
         return randomQuestionArray;
     }
 
+    static String [] GenerateRandomAnswerArray(String answer, String [] alternateAnswers)
+    {
+        ArrayList<String> answerList = new ArrayList<>();
+        answerList.add(answer);
+
+        for(int i = 0; i<alternateAnswers.length; i++)
+        {
+            answerList.add(alternateAnswers[i]);
+        }
+
+        Collections.shuffle(answerList);
+
+        return answerList.toArray(new String[ alternateAnswers.length+1]);
+    }
+
 }

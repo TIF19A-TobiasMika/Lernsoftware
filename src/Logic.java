@@ -21,8 +21,8 @@ public class Logic {
                 });
                 put("Geschichte", new ArrayList<>(){
                     {
-                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre", new String[]{"UK", "Somewhere", "Else"}));
-                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela", new String[]{"UK", "Somewhere", "Else"}));
+                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre", null));
+                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela", null));
                     }}
                 );
             }
@@ -86,11 +86,44 @@ public class Logic {
         Question[] questions = HelperClass.GenerateRandomQuestions(numberOfQuestions, GetQuestionListForCategory(category));
         System.out.println();
 
+        int correctQuestions = 0;
         for(int i = 0; i<numberOfQuestions; i++)
         {
             System.out.println("Frage " + (i+1) + ":");
-            System.out.println(questions[i].question);
+
+            if(questions[i].alternateAnswers != null) {
+                var answerArray = HelperClass.GenerateRandomAnswerArray(questions[i].answer, questions[i].alternateAnswers);
+                var question = HelperClass.createChoiceMenuString(questions[i].question, answerArray);
+                System.out.println(question);
+                var userAnswerIndex = HelperClass.GetInputInt("Ihre Antwort: ", 1, answerArray.length);
+
+                if (questions[i].answer.equalsIgnoreCase(answerArray[userAnswerIndex - 1])) {
+                    System.out.println("Richtige Antwort!");
+                    correctQuestions++;
+                } else {
+                    System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'.");
+                }
+            }
+            else
+            {
+                System.out.println(questions[i].question);
+                var userAnswer = HelperClass.GetInputText("Ihre Antwort: ");
+
+                if(questions[i].answer.equalsIgnoreCase(userAnswer))
+                {
+                    System.out.println("Richtige Antwort!");
+                    correctQuestions++;
+                }
+                else
+                {
+                    System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'");
+                }
+            }
+
+            System.out.println();
         }
+
+        System.out.println("Sie haben " + correctQuestions + " von " + numberOfQuestions + " Fragen richtig beantwortet!");
     }
 
     private ArrayList<Question> GetQuestionListForCategory(String category)
