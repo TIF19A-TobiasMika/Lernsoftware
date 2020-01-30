@@ -84,8 +84,12 @@ public class Logic {
     private void AskQuestions(String category, int numberOfQuestions)
     {
         Question[] questions = HelperClass.GenerateRandomQuestions(numberOfQuestions, GetQuestionListForCategory(category));
+        System.out.println();
 
+        for(int i = 0; i<numberOfQuestions; i++)
+        {
 
+        }
     }
 
     private ArrayList<Question> GetQuestionListForCategory(String category)
@@ -98,7 +102,6 @@ public class Logic {
         {
             allQuestions.add(questions.get(key));
         }
-
         return allQuestions;
     }
 
