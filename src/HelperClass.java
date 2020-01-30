@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HelperClass {
@@ -70,6 +71,11 @@ public class HelperClass {
                 continue;
             }
         }
+    }
+
+    static Question [] GenerateRandomQuestions(int amount, ArrayList<Question> questionCollection)
+    {
+        return null;
     }
 
 }

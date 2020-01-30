@@ -15,14 +15,14 @@ public class Logic {
             {
                 put("Geographie", new ArrayList<>() {
                     {
-                        add( new Question("In welchem Land liegt Paris?", "Frankreich"));
-                        add( new Question("In welchem Land liegt London?", "UK"));
+                        add( new Question("In welchem Land liegt Paris?", "Frankreich", new String[]{"UK", "Somewhere", "Else"}));
+                        add( new Question("In welchem Land liegt London?", "UK", new String[]{"US", "Somewhere", "Else"}));
                     }
                 });
                 put("Geschichte", new ArrayList<>(){
                     {
-                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre"));
-                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela"));
+                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre", new String[]{"UK", "Somewhere", "Else"}));
+                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela", new String[]{"UK", "Somewhere", "Else"}));
                     }}
                 );
             }
@@ -83,7 +83,23 @@ public class Logic {
 
     private void AskQuestions(String category, int numberOfQuestions)
     {
-        var questionSetForCategory = category.equals("") ? questions.values() : questions.get(category); //Need to improve functionality for useable output
+        Question[] questions = HelperClass.GenerateRandomQuestions(numberOfQuestions, GetQuestionListForCategory(category));
+
+
+    }
+
+    private ArrayList<Question> GetQuestionListForCategory(String category)
+    {
+        if(!category.equals("")) return questions.get(category);
+
+        ArrayList<Question> allQuestions = new ArrayList<>();
+
+        for (String key :questions.keySet())
+        {
+            allQuestions.add(questions.get(key));
+        }
+
+        return allQuestions;
     }
 
     private void AddQuestion()
@@ -98,7 +114,7 @@ public class Logic {
     private void ResetQuestions()
     {
         questions = null;
-        questions = JsonHelper.ReturnQuestionsandCategories();
+        questions = JsonHelper.ReturnQuestionsAndCategories();
     }
 
 
