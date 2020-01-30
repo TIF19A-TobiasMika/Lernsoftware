@@ -20,6 +20,24 @@ public class HelperClass {
         return  sb.toString();
     }
 
+    static String createChoiceMenuString(String title, ArrayList<String> options) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(title);
+        sb.append("\n");
+        for (int i = 0; i < options.size(); i++) {
+            sb.append(i+1);
+            sb.append(") ");
+            sb.append(options.get(i));
+            sb.append('\n');
+        }
+        return  sb.toString();
+    }
+
+    static int simpleMenu(String title, String inputQuestion, String... options) {
+        System.out.print(createChoiceMenuString(title, options));
+        return GetInputInt(inputQuestion, 1, options.length);
+    }
+
     static String GetInputText(String question)
     {
         System.out.print(question);
