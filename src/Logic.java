@@ -88,7 +88,8 @@ public class Logic {
 
         for(int i = 0; i<numberOfQuestions; i++)
         {
-
+            System.out.println("Frage " + (i+1) + ":");
+            System.out.println(questions[i].question);
         }
     }
 
@@ -100,7 +101,7 @@ public class Logic {
 
         for (String key :questions.keySet())
         {
-            allQuestions.add(questions.get(key));
+            allQuestions.addAll(questions.get(key));
         }
         return allQuestions;
     }
