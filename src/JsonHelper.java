@@ -49,14 +49,20 @@ public class JsonHelper {
         return null;
     }
 
-    static void saveQuestionsToFile(ArrayList<Question> questions, String path) {
+    static void saveAllCategoriesToFile(HashMap<String, ArrayList<Question>> categories) {
+        for(String key : categories.keySet()) {
+            saveQuestionsToFile(categories.get(key), key);
+        }
+    }
+
+    static void saveQuestionsToFile(ArrayList<Question> questions, String name) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
         String json = gson.toJson(questions);
         //System.out.println(json);
         //Write JSON file
-        try (FileWriter file = new FileWriter(path)) {
+        try (FileWriter file = new FileWriter("categories/" + name + ".json")) {
 
             file.write(json);
             file.flush();

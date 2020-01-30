@@ -15,14 +15,14 @@ public class Logic {
             {
                 put("Geographie", new ArrayList<>() {
                     {
-                        add( new Question("In welchem Land liegt Paris?", "Frankreich"));
-                        add( new Question("In welchem Land liegt London?", "UK"));
+                        add( new Question("In welchem Land liegt Paris?", "Frankreich", null));
+                        add( new Question("In welchem Land liegt London?", "UK", null));
                     }
                 });
                 put("Geschichte", new ArrayList<>(){
                     {
-                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre"));
-                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela"));
+                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre", null));
+                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela", null));
                     }}
                 );
             }
@@ -88,7 +88,7 @@ public class Logic {
 
     private void AddQuestion()
     {
-
+        JsonHelper.saveAllCategoriesToFile(questions);
     }
 
     private void ShowStatistics()
@@ -98,7 +98,7 @@ public class Logic {
     private void ResetQuestions()
     {
         questions = null;
-        questions = JsonHelper.ReturnQuestionsandCategories();
+        questions = JsonHelper.ReturnQuestionsAndCategories();
     }
 
 
