@@ -10,21 +10,32 @@ import java.util.HashMap;
 public class JsonHelper {
 
 
-    static ArrayList<Question> getQuestionsFromFile(String path) throws FileNotFoundException {
-        JsonReader jsonReader = new JsonReader(new FileReader(path));
-        Gson gson = new Gson();
-        return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {
-        }.getType());
+    static ArrayList<Question> getQuestionsFromFile(String path) {
+        JsonReader jsonReader = null;
+        try {
+            jsonReader = new JsonReader(new FileReader(path));
+            Gson gson = new Gson();
+            return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {}.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    static ArrayList<Question> getQuestionsFromFile(File file) throws FileNotFoundException {
-        JsonReader jsonReader = new JsonReader(new FileReader(file));
-        Gson gson = new Gson();
-        return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {
-        }.getType());
+    static ArrayList<Question> getQuestionsFromFile(File file) {
+        JsonReader jsonReader = null;
+        try {
+            jsonReader = new JsonReader(new FileReader(file));
+            Gson gson = new Gson();
+            return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {
+            }.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    static HashMap<String, ArrayList<Question>> ReturnQuestionsAndCategories() throws FileNotFoundException {
+    static HashMap<String, ArrayList<Question>> ReturnQuestionsAndCategories() {
         File dir = new File("categories");
         if (dir.isDirectory()) {
             HashMap<String, ArrayList<Question>> categories = new HashMap<>();
