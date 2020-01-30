@@ -55,7 +55,7 @@ public class Logic {
                 PlayQuiz();
                 break;
             case 2:
-                AddQuestion();
+                AddQuestionMenu();
                 break;
             case 3:
                 ShowStatistics();
@@ -139,9 +139,69 @@ public class Logic {
         return allQuestions;
     }
 
-    private void AddQuestion()
+    private void AddQuestionMenu()
     {
+        ArrayList<String> menuOptions = new ArrayList<>();
+        menuOptions.addAll(questions.keySet());
+        menuOptions.add("Neue Katerogie Erstellen");
+        menuOptions.add("Zurück");
 
+        System.out.println(HelperClass.createChoiceMenuString("Zu welcher Kategorie soll die neue Frage hinzugefügt werden?", menuOptions));
+        var userChoice = HelperClass.GetInputInt("Wählen sie eine Option:  ", 1,menuOptions.size());
+
+        if(userChoice == menuOptions.size()) {
+            MainMenuChoice();
+        } else if(userChoice == menuOptions.size()-1) {
+            //Neue Katerogie
+        } else {
+            AddQuestion(menuOptions.get(userChoice-1));
+        }
+
+        JsonHelper.saveAllCategoriesToFile(questions);
+    }
+
+    private void AddQuestion(String categorie) {
+        System.out.println("\nNeue Frage zu " + categorie + " hinzufügen:\n");
+        String questionText = HelperClass.GetInputText("Wie lautet ihre Frage? ");
+        String correctAnswer = HelperClass.GetInputText("Wie lautet die korrekte Antwort? ");
+        String[] alternateAnswers = null;
+
+        System.out.println(HelperClass.createChoiceMenuString("\nGibt altenative Antwortmöglichkeiten oder ist es eine Input-Frage?", "alternative Antworten", "Input-Frage"));
+        int userChoice = HelperClass.GetInputInt("Wähle einen Fragen Typ: ", 1, 2);
+        if(userChoice == 1) {
+            userChoice = 0;
+            ArrayList<String> alternateAnswersTMP = new ArrayList<>();
+            while (userChoice != 2) {
+                alternateAnswersTMP.add(HelperClass.GetInputText("\nAlternative (falsche) Antwortmöglichkeit: "));
+
+                if(alternateAnswersTMP.size() < 4) {
+                    System.out.println(HelperClass.createChoiceMenuString("", "Weitere Antwortmöglichkeit", "Fertig"));
+                    userChoice = HelperClass.GetInputInt(": ", 1, 2);
+                } else {
+                    userChoice = 2;
+                }
+            }
+            alternateAnswers = alternateAnswersTMP.toArray(String[]::new);
+        }
+
+        Question question = new Question(questionText, correctAnswer, alternateAnswers);
+        userChoice = HelperClass.simpleMenu("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n", ": ","Ja", "Nein");
+        if(userChoice == 1) {
+            questions.get(categorie).add(question);
+            if(JsonHelper.saveQuestionsToFile(questions.get(categorie), categorie)) {
+                System.out.println("Frage wurde zu " + categorie + " hinzugefügt und gespeichert!\n");
+            } else {
+                System.err.println("Fehler beim Speichern!");
+            }
+        } else {
+            System.out.println("Frage wurde verworfen!");
+        }
+        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + categorie + " hinzufügen", "Zurück in Hauptmenu");
+        if(userChoice == 1) {
+            AddQuestion(categorie);
+        } else {
+            MainMenuChoice();
+        }
     }
 
     private void ShowStatistics()
