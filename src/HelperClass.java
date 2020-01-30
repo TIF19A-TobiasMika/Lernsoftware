@@ -38,7 +38,7 @@ public class HelperClass {
             }
             catch (Exception e)
             {
-                System.out.print("Invalid input. Please write a number.");
+                System.out.print("Invalid input. Please write a number: ");
                 continue;
             }
         }
@@ -56,13 +56,17 @@ public class HelperClass {
             {
                 var intInput = Integer.parseInt(input);
 
-                if(startBoundary> intInput || endBoundary < intInput) continue;
+                if(startBoundary> intInput || endBoundary < intInput)
+                {
+                    System.out.print("Please enter a number from " + startBoundary + " to " + endBoundary + ": ");
+                    continue;
+                }
 
                 return intInput;
             }
             catch (Exception e)
             {
-                System.out.print("Invalid input. Please write a number.");
+                System.out.print("Invalid input. Please write a number: ");
                 continue;
             }
         }
