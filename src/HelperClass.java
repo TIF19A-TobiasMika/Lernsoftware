@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class HelperClass {
@@ -70,6 +73,21 @@ public class HelperClass {
                 continue;
             }
         }
+    }
+
+    static Question [] GenerateRandomQuestions(int amount, ArrayList<Question> questionCollection)
+    {
+        Question [] randomQuestionArray = new Question[amount];
+        var randomQuestions = questionCollection;
+
+        Collections.shuffle(randomQuestions);
+
+        for(int i = 0; i < amount; i++)
+        {
+            randomQuestionArray[i] = randomQuestions.get(i);
+        }
+
+        return randomQuestionArray;
     }
 
 }

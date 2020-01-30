@@ -15,14 +15,14 @@ public class Logic {
             {
                 put("Geographie", new ArrayList<>() {
                     {
-                        add( new Question("In welchem Land liegt Paris?", "Frankreich", null));
-                        add( new Question("In welchem Land liegt London?", "UK", null));
+                        add( new Question("In welchem Land liegt Paris?", "Frankreich", new String[]{"UK", "Somewhere", "Else"}));
+                        add( new Question("In welchem Land liegt London?", "UK", new String[]{"US", "Somewhere", "Else"}));
                     }
                 });
                 put("Geschichte", new ArrayList<>(){
                     {
-                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre", null));
-                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela", null));
+                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre", new String[]{"UK", "Somewhere", "Else"}));
+                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela", new String[]{"UK", "Somewhere", "Else"}));
                     }}
                 );
             }
@@ -83,12 +83,31 @@ public class Logic {
 
     private void AskQuestions(String category, int numberOfQuestions)
     {
-        var questionSetForCategory = category.equals("") ? questions.values() : questions.get(category); //Need to improve functionality for useable output
+        Question[] questions = HelperClass.GenerateRandomQuestions(numberOfQuestions, GetQuestionListForCategory(category));
+        System.out.println();
+
+        for(int i = 0; i<numberOfQuestions; i++)
+        {
+
+        }
+    }
+
+    private ArrayList<Question> GetQuestionListForCategory(String category)
+    {
+        if(!category.equals("")) return questions.get(category);
+
+        ArrayList<Question> allQuestions = new ArrayList<>();
+
+        for (String key :questions.keySet())
+        {
+            allQuestions.add(questions.get(key));
+        }
+        return allQuestions;
     }
 
     private void AddQuestion()
     {
-        JsonHelper.saveAllCategoriesToFile(questions);
+
     }
 
     private void ShowStatistics()
