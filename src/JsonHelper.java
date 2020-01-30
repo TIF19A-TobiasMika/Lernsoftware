@@ -55,7 +55,7 @@ public class JsonHelper {
         }
     }
 
-    static void saveQuestionsToFile(ArrayList<Question> questions, String name) {
+    static boolean saveQuestionsToFile(ArrayList<Question> questions, String name) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
@@ -63,12 +63,13 @@ public class JsonHelper {
         //System.out.println(json);
         //Write JSON file
         try (FileWriter file = new FileWriter("categories/" + name + ".json")) {
-
             file.write(json);
             file.flush();
+            return true;
 
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
