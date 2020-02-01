@@ -1,0 +1,20 @@
+[
+  {
+    "question": "In welchem Land liegt Paris?",
+    "answer": "Frankreich",
+    "alternateAnswers": [
+      "UK",
+      "Somewhere",
+      "Else"
+    ]
+  },
+  {
+    "question": "In welchem Land liegt London?",
+    "answer": "UK",
+    "alternateAnswers": [
+      "US",
+      "Somewhere",
+      "Else"
+    ]
+  }
+]

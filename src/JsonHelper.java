@@ -56,11 +56,11 @@ public class JsonHelper {
     }
 
     static boolean saveQuestionsToFile(ArrayList<Question> questions, String name) {
+        //questions.stream().forEach(System.out::println);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
-        String json = gson.toJson(questions);
-        //System.out.println(json);
+        String json = gson.toJson(questions, new TypeToken<ArrayList<Question>>(){}.getType());
         //Write JSON file
         try (FileWriter file = new FileWriter("categories/" + name + ".json")) {
             file.write(json);
