@@ -8,9 +8,9 @@ public class Logic {
 
     public Logic()
     {
-        //questions = JsonHelper.ReturnQuestionsandCategories(); //NotYetImplemented
+        questions = JsonHelper.ReturnQuestionsAndCategories();
 
-        questions = new HashMap<>()
+        /*questions = new HashMap<>()
         {
             {
                 put("Geographie", new ArrayList<>() {
@@ -26,7 +26,7 @@ public class Logic {
                     }}
                 );
             }
-        };
+        };*/
         MainMenuChoices = new String[] {"Spielen", "Fragen hinzufuegen", "Statistiken", "Beenden"};
     }
 
@@ -152,12 +152,27 @@ public class Logic {
         if(userChoice == menuOptions.size()) {
             MainMenuChoice();
         } else if(userChoice == menuOptions.size()-1) {
-            //Neue Katerogie
+            addCategorie();
         } else {
             AddQuestion(menuOptions.get(userChoice-1));
         }
 
         JsonHelper.saveAllCategoriesToFile(questions);
+    }
+
+    private void addCategorie() {
+        System.out.println("\nNeue Kategorie erstellen:\n");
+        String categorie = HelperClass.GetInputText("Wie soll die Kategorie heissen? ");
+        while(questions.keySet().contains(categorie))  {
+            categorie = HelperClass.GetInputText("Diese Katerogie existirt bereits.\nBitte andere Bezeichnung eingeben:");
+        }
+        int userChoice = HelperClass.simpleMenu("Katerogie " + categorie + " wird erstellt", ": ", "Fortsetzen und erste Frage zu " + categorie + " hinzufügen", "Abbrechen und zurück ins Hauptmenu");
+        if(userChoice == 1) {
+            questions.put(categorie, new ArrayList<>());
+            AddQuestion(categorie);
+        } else {
+            MainMenuChoice();
+        }
     }
 
     private void AddQuestion(String categorie) {
@@ -196,7 +211,7 @@ public class Logic {
         } else {
             System.out.println("Frage wurde verworfen!");
         }
-        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + categorie + " hinzufügen", "Zurück in Hauptmenu");
+        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + categorie + " hinzufügen", "Zurück ins Hauptmenu");
         if(userChoice == 1) {
             AddQuestion(categorie);
         } else {
