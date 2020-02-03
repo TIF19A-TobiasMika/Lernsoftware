@@ -4,6 +4,7 @@ public class Question {
     String[] alternateAnswers;
     int correctAnswers;
     int wrongAnswers;
+    String statCategory;
 
     public Question(String question, String answer, String[] alternateAnswers, int correctAnswers, int wrongAnswers) {
         this.question = question;

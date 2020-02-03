@@ -73,4 +73,9 @@ public class JsonHelper {
         }
     }
 
+    static void SaveQuestionStatistics(Question question, String category)
+    {
+
+    }
+
 }

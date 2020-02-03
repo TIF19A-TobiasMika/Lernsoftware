@@ -106,8 +106,12 @@ public class Logic {
                 if (questions[i].answer.equalsIgnoreCase(answerArray[userAnswerIndex - 1])) {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
+                    questions[i].correctAnswers++;
+                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 } else {
                     System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'.");
+                    questions[i].wrongAnswers++;
+                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 }
             }
             else
@@ -119,10 +123,14 @@ public class Logic {
                 {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
+                    questions[i].correctAnswers++;
+                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 }
                 else
                 {
                     System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'");
+                    questions[i].wrongAnswers++;
+                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 }
             }
 
@@ -138,9 +146,12 @@ public class Logic {
 
         ArrayList<Question> allQuestions = new ArrayList<>();
 
+        var tempKeyIndex = 0;
         for (String key :questions.keySet())
         {
             allQuestions.addAll(questions.get(key));
+            allQuestions.get(tempKeyIndex).statCategory = key;
+            tempKeyIndex++;
         }
         return allQuestions;
     }
@@ -205,7 +216,7 @@ public class Logic {
             alternateAnswers = alternateAnswersTMP.toArray(String[]::new);
         }
 
-        Question question = new Question(questionText, correctAnswer, alternateAnswers);
+        Question question = new Question(questionText, correctAnswer, alternateAnswers, 0 , 0);
         userChoice = HelperClass.simpleMenu("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n", ": ","Ja", "Nein");
         if(userChoice == 1) {
             questions.get(categorie).add(question);
