@@ -43,8 +43,8 @@ public class JsonHelper {
                 filename = filename.substring(0, filename.length()-5);
                 System.out.println(filename);
                 categories.put(filename, getQuestionsFromFile(file));
-                return categories;
             }
+            return categories;
         }
         return null;
     }

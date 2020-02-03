@@ -74,16 +74,22 @@ public class Logic {
         System.out.println(HelperClass.createChoiceMenuString("Aus welcher Kategorie sollen Fragen gestellt werden?\nFuer einen Mix aus allen Kategorien schreiben Sie einfach '0'.", categories));
 
         var categoryIndex = HelperClass.GetInputInt("Welche Kategorie (0 fuer Alle)? ", 0, categories.length);
-        categoryIndex = categoryIndex == 0 ? 0 : categoryIndex-1;
 
         var numberOfQuestions = HelperClass.GetInputInt("Wieviele Fragen wollen Sie beantworten (max. 10)? ", 1, 10);
 
-        AskQuestions(categoryIndex == 0 ? "" : categories[categoryIndex], numberOfQuestions);
+        AskQuestions(categoryIndex == 0 ? "" : categories[categoryIndex-1], numberOfQuestions);
     }
 
     private void AskQuestions(String category, int numberOfQuestions)
     {
         Question[] questions = HelperClass.GenerateRandomQuestions(numberOfQuestions, GetQuestionListForCategory(category));
+
+        if(questions == null)
+        {
+            System.out.println("This category doesn't hold that many questions!");
+            return;
+        }
+
         System.out.println();
 
         int correctQuestions = 0;

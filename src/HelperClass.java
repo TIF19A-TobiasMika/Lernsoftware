@@ -90,6 +90,8 @@ public class HelperClass {
 
     static Question [] GenerateRandomQuestions(int amount, ArrayList<Question> questionCollection)
     {
+        if(amount> questionCollection.size()) return null;
+
         Question [] randomQuestionArray = new Question[amount];
 
         Collections.shuffle(questionCollection);
