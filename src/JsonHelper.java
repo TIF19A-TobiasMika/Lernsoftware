@@ -11,9 +11,8 @@ public class JsonHelper {
 
 
     static ArrayList<Question> getQuestionsFromFile(String path) {
-        JsonReader jsonReader = null;
         try {
-            jsonReader = new JsonReader(new FileReader(path));
+            JsonReader jsonReader = new JsonReader(new FileReader(path));
             Gson gson = new Gson();
             return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {}.getType());
         } catch (FileNotFoundException e) {
@@ -38,13 +37,17 @@ public class JsonHelper {
         File dir = new File("categories");
         if (dir.isDirectory()) {
             HashMap<String, ArrayList<Question>> categories = new HashMap<>();
-            for (File file : dir.listFiles()) {
-                String filename = file.getName();
-                filename = filename.substring(0, filename.length()-5);
-                System.out.println(filename);
-                categories.put(filename, getQuestionsFromFile(file));
+            try {
+                for (File file : dir.listFiles()) {
+                    String filename = file.getName();
+                    filename = filename.substring(0, filename.length()-5);
+                    System.out.println(filename);
+                    categories.put(filename, getQuestionsFromFile(file));
+                }
+                return categories;
+            } catch(NullPointerException e) {
+                e.printStackTrace();
             }
-            return categories;
         }
         return null;
     }
@@ -55,14 +58,14 @@ public class JsonHelper {
         }
     }
 
-    static boolean saveQuestionsToFile(ArrayList<Question> questions, String name) {
+    static boolean saveQuestionsToFile(ArrayList<Question> questions, String category) {
         //questions.stream().forEach(System.out::println);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
         String json = gson.toJson(questions, new TypeToken<ArrayList<Question>>(){}.getType());
         //Write JSON file
-        try (FileWriter file = new FileWriter("categories/" + name + ".json")) {
+        try (FileWriter file = new FileWriter("categories/" + category + ".json")) {
             file.write(json);
             file.flush();
             return true;
@@ -72,10 +75,4 @@ public class JsonHelper {
             return false;
         }
     }
-
-    static void SaveQuestionStatistics(Question question, String category)
-    {
-
-    }
-
 }

@@ -3,13 +3,13 @@ import java.util.HashMap;
 
 public class Logic {
 
-    private HashMap<String, ArrayList<Question>> questions;
+    private HashMap<String, ArrayList<Question>> categories;
     private String [] MainMenuChoices;
     private String[] StatisticChoices;
 
     public Logic()
     {
-        questions = JsonHelper.ReturnQuestionsAndCategories();
+        categories = JsonHelper.ReturnQuestionsAndCategories();
 
         /*questions = new HashMap<>()
         {
@@ -49,7 +49,7 @@ public class Logic {
         var mainchoice = HelperClass.createChoiceMenuString("Folgende Aktionen stehen zur Auswahl:", MainMenuChoices);
         System.out.println(mainchoice);
 
-        var userChoice = HelperClass.GetInputInt("Was wollen Sie tun? ", 1,4);
+        var userChoice = HelperClass.GetInputInt("Was wollen Sie tun? ", 1,5);
 
         switch(userChoice)
         {
@@ -64,22 +64,25 @@ public class Logic {
                 break;
             case 4:
                 System.exit(0);
+                break;
+            case 5:
+                JsonHelper.saveAllCategoriesToFile(categories);
         }
     }
 
     private void PlayQuiz()
     {
-        var categories = questions.keySet().toArray(new String[questions.size()]);
+        var categoryNames = this.categories.keySet().toArray(new String[this.categories.size()]);
 
         System.out.println();
         System.out.println("Sie befinden sich im Quiz-Modus");
-        System.out.println(HelperClass.createChoiceMenuString("Aus welcher Kategorie sollen Fragen gestellt werden?\nFuer einen Mix aus allen Kategorien schreiben Sie einfach '0'.", categories));
+        System.out.println(HelperClass.createChoiceMenuString("Aus welcher Kategorie sollen Fragen gestellt werden?\nFuer einen Mix aus allen Kategorien schreiben Sie einfach '0'.", categoryNames));
 
-        var categoryIndex = HelperClass.GetInputInt("Welche Kategorie (0 fuer Alle)? ", 0, categories.length);
+        var categoryIndex = HelperClass.GetInputInt("Welche Kategorie (0 fuer Alle)? ", 0, categoryNames.length);
 
         var numberOfQuestions = HelperClass.GetInputInt("Wieviele Fragen wollen Sie beantworten (max. 10)? ", 1, 10);
 
-        AskQuestions(categoryIndex == 0 ? "" : categories[categoryIndex-1], numberOfQuestions);
+        AskQuestions(categoryIndex == 0 ? "" : categoryNames[categoryIndex-1], numberOfQuestions);
     }
 
     private void AskQuestions(String category, int numberOfQuestions)
@@ -109,11 +112,9 @@ public class Logic {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
                     questions[i].correctAnswers++;
-                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 } else {
                     System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'.");
                     questions[i].wrongAnswers++;
-                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 }
             }
             else
@@ -126,46 +127,48 @@ public class Logic {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
                     questions[i].correctAnswers++;
-                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 }
                 else
                 {
                     System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'");
                     questions[i].wrongAnswers++;
-                    JsonHelper.SaveQuestionStatistics(questions[i], category.equals("") ? questions[i].statCategory : category);
                 }
             }
 
             System.out.println();
         }
 
+        if(!category.equals("")) {
+            JsonHelper.saveQuestionsToFile(categories.get(category), category);
+        } else {
+            JsonHelper.saveAllCategoriesToFile(categories);
+        }
         System.out.println("Sie haben " + correctQuestions + " von " + numberOfQuestions + " Fragen richtig beantwortet!");
     }
 
     private ArrayList<Question> GetQuestionListForCategory(String category)
     {
-        if(!category.equals("")) return questions.get(category);
+        if(!category.equals("")) return categories.get(category);
 
         ArrayList<Question> allQuestions = new ArrayList<>();
 
-        var tempKeyIndex = 0;
-        for (String key :questions.keySet())
+        //var tempKeyIndex = 0;
+        for (String key : categories.keySet())
         {
-            allQuestions.addAll(questions.get(key));
+            allQuestions.addAll(categories.get(key));
 
-            for(int i = 0; i<questions.get(key).size(); i++)
+            /*for(int i = 0; i< categories.get(key).size(); i++)
             {
                 allQuestions.get(tempKeyIndex).statCategory = key;
                 tempKeyIndex++;
-            }
+            }*/
         }
         return allQuestions;
     }
 
     private void AddQuestionMenu()
     {
-        ArrayList<String> menuOptions = new ArrayList<>();
-        menuOptions.addAll(questions.keySet());
+        ArrayList<String> menuOptions = new ArrayList<>(categories.keySet());
         menuOptions.add("Neue Katerogie Erstellen");
         menuOptions.add("Zurück");
 
@@ -180,18 +183,18 @@ public class Logic {
             AddQuestion(menuOptions.get(userChoice-1));
         }
 
-        JsonHelper.saveAllCategoriesToFile(questions);
+        JsonHelper.saveAllCategoriesToFile(categories);
     }
 
     private void addCategorie() {
         System.out.println("\nNeue Kategorie erstellen:\n");
         String categorie = HelperClass.GetInputText("Wie soll die Kategorie heissen? ");
-        while(questions.keySet().contains(categorie))  {
+        while(categories.containsKey(categorie))  {
             categorie = HelperClass.GetInputText("Diese Katerogie existirt bereits.\nBitte andere Bezeichnung eingeben:");
         }
         int userChoice = HelperClass.simpleMenu("Katerogie " + categorie + " wird erstellt", ": ", "Fortsetzen und erste Frage zu " + categorie + " hinzufügen", "Abbrechen und zurück ins Hauptmenu");
         if(userChoice == 1) {
-            questions.put(categorie, new ArrayList<>());
+            categories.put(categorie, new ArrayList<>());
             AddQuestion(categorie);
         } else {
             MainMenuChoice();
@@ -225,8 +228,8 @@ public class Logic {
         Question question = new Question(questionText, correctAnswer, alternateAnswers, 0 , 0);
         userChoice = HelperClass.simpleMenu("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n", ": ","Ja", "Nein");
         if(userChoice == 1) {
-            questions.get(categorie).add(question);
-            if(JsonHelper.saveQuestionsToFile(questions.get(categorie), categorie)) {
+            categories.get(categorie).add(question);
+            if(JsonHelper.saveQuestionsToFile(categories.get(categorie), categorie)) {
                 System.out.println("Frage wurde zu " + categorie + " hinzugefügt und gespeichert!\n");
             } else {
                 System.err.println("Fehler beim Speichern!");
@@ -244,7 +247,7 @@ public class Logic {
 
     private void ShowStatistics()
     {
-        var globalStats = HelperClass.CreateGlobalStatValues(questions);
+        var globalStats = HelperClass.CreateGlobalStatValues(categories);
         System.out.println();
 
         System.out.println("Herzlich Willkommen im Statistik Bereich:");
@@ -260,8 +263,8 @@ public class Logic {
                 return;
             }
             System.out.println("Fragen insgesamt: " + globalStats[2]);
-            System.out.println("Davon richtig beantwortet: " + globalStats[1] + " (in Prozent: " + ((globalStats[1]/globalStats[2])*100) + "%)");
-            System.out.println("Davon falsch beantwortet: " + globalStats[0]+ " (in Prozent: " + ((globalStats[0]/globalStats[2])*100) + "%)");
+            System.out.println("Davon richtig beantwortet: " + globalStats[1] + " (in Prozent: " + (((double) (globalStats[1])/globalStats[2])*100) + "%)");
+            System.out.println("Davon falsch beantwortet: " + globalStats[0]+ " (in Prozent: " + (((double) (globalStats[0])/globalStats[2])*100) + "%)");
         }
         else
         {
@@ -271,8 +274,8 @@ public class Logic {
     }
     private void ResetQuestions()
     {
-        questions = null;
-        questions = JsonHelper.ReturnQuestionsAndCategories();
+        categories = null;
+        categories = JsonHelper.ReturnQuestionsAndCategories();
     }
 
 

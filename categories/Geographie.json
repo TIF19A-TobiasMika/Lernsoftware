@@ -6,7 +6,9 @@
       "UK",
       "Somewhere",
       "Else"
-    ]
+    ],
+    "correctAnswers": 1,
+    "wrongAnswers": 0
   },
   {
     "question": "In welchem Land liegt London?",
@@ -15,6 +17,8 @@
       "US",
       "Somewhere",
       "Else"
-    ]
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
   }
 ]
