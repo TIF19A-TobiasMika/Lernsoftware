@@ -5,6 +5,7 @@ public class Logic {
 
     private HashMap<String, ArrayList<Question>> questions;
     private String [] MainMenuChoices;
+    private String[] StatisticChoices;
 
     public Logic()
     {
@@ -28,6 +29,7 @@ public class Logic {
             }
         };*/
         MainMenuChoices = new String[] {"Spielen", "Fragen hinzufuegen", "Statistiken", "Beenden"};
+        StatisticChoices = new String[] {"Allgemein", "Fragenspezifisch"};
     }
 
     public void RunGame()
@@ -150,8 +152,12 @@ public class Logic {
         for (String key :questions.keySet())
         {
             allQuestions.addAll(questions.get(key));
-            allQuestions.get(tempKeyIndex).statCategory = key;
-            tempKeyIndex++;
+
+            for(int i = 0; i<questions.get(key).size(); i++)
+            {
+                allQuestions.get(tempKeyIndex).statCategory = key;
+                tempKeyIndex++;
+            }
         }
         return allQuestions;
     }
@@ -238,7 +244,30 @@ public class Logic {
 
     private void ShowStatistics()
     {
-        System.out.println("This funtion is not implemented yet!");
+        var globalStats = HelperClass.CreateGlobalStatValues(questions);
+        System.out.println();
+
+        System.out.println("Herzlich Willkommen im Statistik Bereich:");
+        System.out.println(HelperClass.createChoiceMenuString("Welche Statistiken wollen Sie sehen?", StatisticChoices));
+
+        var userInput = HelperClass.GetInputInt("Auswahl: ", 1, 2);
+
+        if(userInput == 1)
+        {
+            if(globalStats[2] <= 0)
+            {
+                System.out.println("Noch keine Fragen beantwortet");
+                return;
+            }
+            System.out.println("Fragen insgesamt: " + globalStats[2]);
+            System.out.println("Davon richtig beantwortet: " + globalStats[1] + " (in Prozent: " + ((globalStats[1]/globalStats[2])*100) + "%)");
+            System.out.println("Davon falsch beantwortet: " + globalStats[0]+ " (in Prozent: " + ((globalStats[0]/globalStats[2])*100) + "%)");
+        }
+        else
+        {
+
+        }
+
     }
     private void ResetQuestions()
     {

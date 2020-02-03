@@ -116,4 +116,23 @@ public class HelperClass {
         return answerList.toArray(new String[ alternateAnswers.length+1]);
     }
 
+    static int[] CreateGlobalStatValues(HashMap<String, ArrayList<Question>> questions)
+    {
+        int [] globalStats = new int[] {0, 0, 0};
+
+        for (String key : questions.keySet())
+        {
+            for(int i = 0; i<questions.get(key).size(); i++)
+            {
+                var tempQuestion = questions.get(key).get(i);
+                globalStats[0] = globalStats[0] + tempQuestion.wrongAnswers;
+                globalStats[1] = globalStats[1] + tempQuestion.correctAnswers;
+            }
+        }
+
+        globalStats[2] = globalStats[0] + globalStats[1];
+
+        return globalStats;
+    }
+
 }
