@@ -2,17 +2,23 @@ public class Question {
     String question;
     String answer;
     String[] alternateAnswers;
+    int correctAnswers;
+    int wrongAnswers;
 
-    public Question(String question, String answer, String[] alternateAnswers) {
+    public Question(String question, String answer, String[] alternateAnswers, int correctAnswers, int wrongAnswers) {
         this.question = question;
         this.answer = answer;
         this.alternateAnswers = alternateAnswers;
+        this.correctAnswers = correctAnswers;
+        this.wrongAnswers = wrongAnswers;
     }
 
-    public Question(String question, String answer) {
+    public Question(String question, String answer, int correctAnswers, int wrongAnswers) {
         this.question = question;
         this.answer = answer;
         this.alternateAnswers = null;
+        this.correctAnswers = correctAnswers;
+        this.wrongAnswers = wrongAnswers;
     }
 
     @Override
