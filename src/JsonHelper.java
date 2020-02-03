@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonReader;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class JsonHelper {
 
@@ -38,10 +39,10 @@ public class JsonHelper {
         if (dir.isDirectory()) {
             HashMap<String, ArrayList<Question>> categories = new HashMap<>();
             try {
-                for (File file : dir.listFiles()) {
+                for (File file : Objects.requireNonNull(dir.listFiles())) {
                     String filename = file.getName();
                     filename = filename.substring(0, filename.length()-5);
-                    System.out.println(filename);
+                    //System.out.println(filename);
                     categories.put(filename, getQuestionsFromFile(file));
                 }
                 return categories;
