@@ -11,8 +11,76 @@
     "wrongAnswers": 0
   },
   {
-    "question": "Wie heisst Angela Merkel mit Vornamen?",
-    "answer": "Angela",
+    "question": "Wann begann der 2. Weltkrieg?",
+    "answer": "1. September 1939",
+    "alternateAnswers": [
+      "10. Oktober 1939",
+      "01. Januar 1940",
+      "03. August 1939"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Welcher roemische Kaiser soll Rom angezuendet haben?",
+    "answer": "Nero",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Wer gilt als der Uebersetzer der Bibel ins Deutsche?",
+    "answer": "Martin Luther",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Wer gilt als der Entdecker Amerikas?",
+    "answer": "Kolumbus",
+    "alternateAnswers": [
+      "Magelan",
+      "Bering",
+      "Cook"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Wer hat im 15. Jahrhundert den Buchdruck erfunden?",
+    "answer": "Gutenberg",
+    "alternateAnswers": [
+      "Schlechtenberg",
+      "Schoenensee",
+      "Besserwald"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Welcher roemische Herrscher fuehrte den Kalender, wie wir ihn kennen, ein?",
+    "answer": "Caesar",
+    "alternateAnswers": [
+      "Nero",
+      "Napoleon",
+      "Augustus"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Wie lautet der Nachname des ersten deutschen Bundeskanzlers seit 1949?",
+    "answer": "Adenauer",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "In welchem Jahr war der Mauerfall?",
+    "answer": "1989",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "In welchem Jahr wurde der Euro als Bargeld eingefuehrt?",
+    "answer": "2002",
     "correctAnswers": 0,
     "wrongAnswers": 0
   }
