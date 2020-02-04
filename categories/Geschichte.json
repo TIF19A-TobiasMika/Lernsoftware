@@ -3,12 +3,12 @@
     "question": "Wie lange dauerte der 30-jaehrige Krieg?",
     "answer": "30 Jahre",
     "correctAnswers": 0,
-    "wrongAnswers": 1
+    "wrongAnswers": 0
   },
   {
     "question": "Wie heisst Angela Merkel mit Vornamen?",
     "answer": "Angela",
-    "correctAnswers": 1,
+    "correctAnswers": 0,
     "wrongAnswers": 0
   }
 ]
