@@ -10,5 +10,68 @@
     "answer": "78",
     "correctAnswers": 0,
     "wrongAnswers": 0
+  },
+  {
+    "question": "Was berechnet ein Integral?",
+    "answer": "Den Flaecheninhalt unter einer Kurve",
+    "alternateAnswers": [
+      "Den Umfang eines Quadrats",
+      "Die Zahl Pi",
+      "Den Durchschnittswert einer Funktion"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Was ist die Wurzel von 25?",
+    "answer": "5",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Was ist die Quersumme von 351?",
+    "answer": "9",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Was ist an dieser Division falsch: 2/0?",
+    "answer": "Man darf nicht durch 0 teilen",
+    "alternateAnswers": [
+      "2 ist keine gueltige Zahl",
+      "Nur ungerade Zahlen duerfen dividiert werden",
+      "Das Ergebnis ist groesser als 2"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Wie lautet die dritte binomische Formel?",
+    "answer": "(a+b)*(a-b)= a^2 - b^2",
+    "alternateAnswers": [
+      "(a+b)*(a+b)=a^2-b^2",
+      "(a-b)*(a-b)=a^2-b^2",
+      "a+b = a*b"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Was ergibt 20*4+5?",
+    "answer": "85",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Was ergibt Wurzel 2 * Wurzel 2?",
+    "answer": "2",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Was ergibt 12+2*5+3?",
+    "answer": "25",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
   }
 ]
