@@ -2,6 +2,11 @@
   {
     "question": "Wie lange dauerte der 30-jaehrige Krieg?",
     "answer": "30 Jahre",
+    "alternateAnswers": [
+      "20 Jahre",
+      "10 Jahre",
+      "1 Jahr"
+    ],
     "correctAnswers": 0,
     "wrongAnswers": 0
   },

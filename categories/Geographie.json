@@ -4,8 +4,8 @@
     "answer": "Frankreich",
     "alternateAnswers": [
       "UK",
-      "Somewhere",
-      "Else"
+      "Deutschland",
+      "Russland"
     ],
     "correctAnswers": 0,
     "wrongAnswers": 0
@@ -14,9 +14,9 @@
     "question": "In welchem Land liegt London?",
     "answer": "UK",
     "alternateAnswers": [
-      "US",
-      "Somewhere",
-      "Else"
+      "USA",
+      "Bahamas",
+      "Syrien"
     ],
     "correctAnswers": 0,
     "wrongAnswers": 0
