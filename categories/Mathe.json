@@ -2,13 +2,13 @@
   {
     "question": "Was ergibt -22 + 44",
     "answer": "22",
-    "correctAnswers": 1,
+    "correctAnswers": 2,
     "wrongAnswers": 0
   },
   {
     "question": "Was ist 5*12 + 6*3",
     "answer": "78",
     "correctAnswers": 0,
-    "wrongAnswers": 1
+    "wrongAnswers": 2
   }
 ]

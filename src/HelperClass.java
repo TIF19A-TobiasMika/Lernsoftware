@@ -94,7 +94,7 @@ public class HelperClass {
 
         Question [] randomQuestionArray = new Question[amount];
 
-        Collections.shuffle(questionCollection);
+        Collections.sort(questionCollection, new SortByWrongAnswers());
 
         for(var i = 0; i < amount; i++)
         {
