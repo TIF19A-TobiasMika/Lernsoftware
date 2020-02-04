@@ -20,5 +20,73 @@
     ],
     "correctAnswers": 0,
     "wrongAnswers": 0
+  },
+  {
+    "question": "Zu welchem Staat gehoert Alaska?",
+    "answer": "USA",
+    "alternateAnswers": [
+      "Kanada",
+      "Russland",
+      "Alaska"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Wieviele Sterne sind auf der amerikanischen Flagge?",
+    "answer": "50",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Zu welchem Kontinent gehoert Japan?",
+    "answer": "Asien",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "In welcher Stadt steht das Rockefeller Center?",
+    "answer": "New York City",
+    "alternateAnswers": [
+      "Washington",
+      "Quebec",
+      "Chicage"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "In welchem Land liegt der Vesuv?",
+    "answer": "Italien",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Was gilt als tiefster Punkt des Weltmeeres?",
+    "answer": "Marianengraben",
+    "alternateAnswers": [
+      "Bermudadreieck",
+      "Great Barrier Reef",
+      "Niagara Falls"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Wie wird der heilige Berg der Aborigines genannt?",
+    "answer": "Ayers Rock",
+    "alternateAnswers": [
+      "Mount Rushmore",
+      "Annapurna",
+      "Kilimandscharo"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Stockholm ist die Hauptstadt von ...?",
+    "answer": "Schweden",
+    "correctAnswers": 0,
+    "wrongAnswers": 0
   }
 ]
