@@ -10,23 +10,6 @@ public class Logic {
     public Logic() {
         categories = JsonHelper.ReturnQuestionsAndCategories();
 
-        /*questions = new HashMap<>()
-        {
-            {
-                put("Geographie", new ArrayList<>() {
-                    {
-                        add( new Question("In welchem Land liegt Paris?", "Frankreich", new String[]{"UK", "Somewhere", "Else"}));
-                        add( new Question("In welchem Land liegt London?", "UK", new String[]{"US", "Somewhere", "Else"}));
-                    }
-                });
-                put("Geschichte", new ArrayList<>(){
-                    {
-                        add( new Question("Wie lange dauerte der 30-jaehrige Krieg?", "30 Jahre", null));
-                        add( new Question("Wie heisst Angela Merkel mit Vornamen?", "Angela", null));
-                    }}
-                );
-            }
-        };*/
         MainMenuChoices = new String[]{"Spielen", "Fragen hinzufuegen", "Statistiken", "Beenden"};
         StatisticChoices = new String[]{"Allgemein", "Fragenspezifisch", "Kategoriespezifisch", "Statistiken zurücksetzten"};
     }
@@ -66,7 +49,7 @@ public class Logic {
     }
 
     private void PlayQuiz() {
-        var categoryNames = this.categories.keySet().toArray(new String[this.categories.size()]);
+        var categoryNames = this.categories.keySet().toArray(String[]::new);
 
         System.out.println();
         System.out.println("Sie befinden sich im Quiz-Modus");
@@ -273,7 +256,7 @@ public class Logic {
 
     }
 
-    private void ResetQuestions() {
+    private void reloadQuestions() {
         categories = null;
         categories = JsonHelper.ReturnQuestionsAndCategories();
     }

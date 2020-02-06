@@ -51,8 +51,7 @@ public class HelperClass {
 
             try
             {
-                var intInput = Integer.parseInt(input);
-                return intInput;
+                return Integer.parseInt(input);
             }
             catch (Exception e)
             {

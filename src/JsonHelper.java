@@ -10,18 +10,6 @@ import java.util.Objects;
 
 public class JsonHelper {
 
-
-    static ArrayList<Question> getQuestionsFromFile(String path) {
-        try {
-            JsonReader jsonReader = new JsonReader(new FileReader(path));
-            Gson gson = new Gson();
-            return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {}.getType());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     static ArrayList<Question> getQuestionsFromFile(File file) {
         try {
             JsonReader jsonReader = new JsonReader(new FileReader(file));
