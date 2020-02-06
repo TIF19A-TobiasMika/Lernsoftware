@@ -2,13 +2,13 @@
   {
     "question": "Was ergibt -22 + 44",
     "answer": "22",
-    "correctAnswers": 1,
+    "correctAnswers": 2,
     "wrongAnswers": 0
   },
   {
     "question": "Was ist 5*12 + 6*3",
     "answer": "78",
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 1
   },
   {
@@ -19,19 +19,19 @@
       "Die Zahl Pi",
       "Den Durchschnittswert einer Funktion"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {
     "question": "Was ist die Wurzel von 25?",
     "answer": "5",
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {
     "question": "Was ist die Quersumme von 351?",
     "answer": "9",
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {
