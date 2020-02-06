@@ -66,4 +66,38 @@ public class Question {
         }
         return sb.toString();
     }
+
+    public void printStats() {
+        System.out.println("Frage: " + question);
+        if(correctAnswers + wrongAnswers > 0) {
+            System.out.println(String.format("Insgesamt %d Mal beantwortet, davon %d%% Mal richtig\n", (correctAnswers + wrongAnswers), (correctAnswers * 100) / (correctAnswers + wrongAnswers)));
+            //System.out.println(String.format("%dx Richtig beantwortet, %dx Falsch Beantwortet", correctAnswers, wrongAnswers));
+        } else {
+            System.out.println("Diese Frage wurde noch nie beantwortet\n");
+        }
+    }
+
+    public void resetStats() {
+        correctAnswers = 0;
+        wrongAnswers = 0;
+    }
+
+    public void printDetailedStats() {
+        System.out.println("Frage: " + question);
+        System.out.println("Richtige Antwort: " + answer);
+        if(correctAnswers + wrongAnswers > 0) {
+            System.out.println(String.format("Insgesamt %d Mal beantwortet, davon %d%% Mal richtig", (correctAnswers + wrongAnswers), (correctAnswers * 100) / (correctAnswers + wrongAnswers)));
+            System.out.println(String.format("%dx Richtig beantwortet, %dx Falsch Beantwortet\n", correctAnswers, wrongAnswers));
+        } else {
+            System.out.println("Diese Frage wurde noch nie beantwortet\n");
+        }
+    }
+
+    public void addToCorrectAnswers(int i) {
+        correctAnswers += i;
+    }
+
+    public void addToWrongAnswer(int i) {
+        wrongAnswers += i;
+    }
 }

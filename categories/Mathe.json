@@ -2,14 +2,14 @@
   {
     "question": "Was ergibt -22 + 44",
     "answer": "22",
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {
     "question": "Was ist 5*12 + 6*3",
     "answer": "78",
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 1
   },
   {
     "question": "Was berechnet ein Integral?",
@@ -47,11 +47,11 @@
   },
   {
     "question": "Wie lautet die dritte binomische Formel?",
-    "answer": "(a+b)*(a-b)= a^2 - b^2",
+    "answer": "(a+b)*(a-b)\u003d a^2 - b^2",
     "alternateAnswers": [
-      "(a+b)*(a+b)=a^2-b^2",
-      "(a-b)*(a-b)=a^2-b^2",
-      "a+b = a*b"
+      "(a+b)*(a+b)\u003da^2-b^2",
+      "(a-b)*(a-b)\u003da^2-b^2",
+      "a+b \u003d a*b"
     ],
     "correctAnswers": 0,
     "wrongAnswers": 0

@@ -235,23 +235,41 @@ public class Logic {
         System.out.println("Herzlich Willkommen im Statistik Bereich:");
         System.out.println(HelperClass.createChoiceMenuString("Welche Statistiken wollen Sie sehen?", StatisticChoices));
 
-        var userInput = HelperClass.GetInputInt("Auswahl: ", 1, 2);
+        var userInput = HelperClass.GetInputInt("Auswahl: ", 1, 3);
 
-        if(userInput == 1)
-        {
-            if(globalStats[2] <= 0)
-            {
+        if (userInput == 1) {
+            if (globalStats[2] <= 0) {
                 System.out.println("Noch keine Fragen beantwortet");
                 return;
             }
             System.out.println("Fragen insgesamt: " + globalStats[2]);
-            System.out.println("Davon richtig beantwortet: " + globalStats[1] + " (in Prozent: " + (((double) (globalStats[1])/globalStats[2])*100) + "%)");
-            System.out.println("Davon falsch beantwortet: " + globalStats[0]+ " (in Prozent: " + (((double) (globalStats[0])/globalStats[2])*100) + "%)");
+            System.out.println("Davon richtig beantwortet: " + globalStats[1] + " (in Prozent: " + (((double) (globalStats[1]) / globalStats[2]) * 100) + "%)");
+            System.out.println("Davon falsch beantwortet: " + globalStats[0] + " (in Prozent: " + (((double) (globalStats[0]) / globalStats[2]) * 100) + "%)");
+        } else if (userInput == 2) {
+            for (String category : categories.keySet()) {
+                System.out.println("------ " + category + " ------");
+                for (Question q : categories.get(category)) {
+                    q.printStats();
+                }
+            }
+        } else if(userInput == 3) {
+            String[] categoryOptions = categories.keySet().toArray(String[]::new);
+            int choice = HelperClass.simpleMenu("Wählen sie eine Kategorie: ", ": ", categoryOptions);
+            String category = categoryOptions[choice-1];
+            System.out.println("------ " + category + " ------");
+            if(HelperClass.printCategoryStats(categories.get(category))) {
+                for (Question q : categories.get(category)) {
+                    q.printDetailedStats();
+                }
+            }
+        } else if(userInput == 4) {
+            for(ArrayList<Question> catergory : categories.values()) {
+                for(Question q : catergory) {
+                    q.resetStats();
+                }
+            }
         }
-        else
-        {
-            //Show Stats for specific questions (not yet implemented)
-        }
+
 
     }
 

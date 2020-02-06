@@ -135,4 +135,21 @@ public class HelperClass {
         return globalStats;
     }
 
+    public static boolean printCategoryStats(ArrayList<Question> questions) {
+        System.out.println("Fragen in der Kategorie: " + questions.size());
+        int correctAnswers = 0;
+        int wrongAnswers = 0;
+        for (Question q : questions) {
+            correctAnswers += q.getCorrectAnswers();
+            wrongAnswers += q.getWrongAnswers();
+        }
+        if(correctAnswers + wrongAnswers > 0) {
+            System.out.println(String.format("Diese wurden Insgesamt %d Mal beantwortet, davon %d%% Mal richtig", (correctAnswers + wrongAnswers), (correctAnswers * 100) / (correctAnswers + wrongAnswers)));
+            System.out.println(String.format("%dx Richtig beantwortet, %dx Falsch Beantwortet\n", correctAnswers, wrongAnswers));
+            return true;
+        } else {
+            System.out.println("Bisher wurde noch keine davon beantwortet\n");
+            return false;
+        }
+    }
 }
