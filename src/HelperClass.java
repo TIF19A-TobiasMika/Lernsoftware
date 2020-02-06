@@ -125,8 +125,8 @@ public class HelperClass {
             for(int i = 0; i<questions.get(key).size(); i++)
             {
                 var tempQuestion = questions.get(key).get(i);
-                globalStats[0] = globalStats[0] + tempQuestion.wrongAnswers;
-                globalStats[1] = globalStats[1] + tempQuestion.correctAnswers;
+                globalStats[0] = globalStats[0] + tempQuestion.getWrongAnswers();
+                globalStats[1] = globalStats[1] + tempQuestion.getCorrectAnswers();
             }
         }
 

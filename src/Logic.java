@@ -4,11 +4,10 @@ import java.util.HashMap;
 public class Logic {
 
     private HashMap<String, ArrayList<Question>> categories;
-    private String [] MainMenuChoices;
+    private String[] MainMenuChoices;
     private String[] StatisticChoices;
 
-    public Logic()
-    {
+    public Logic() {
         categories = JsonHelper.ReturnQuestionsAndCategories();
 
         /*questions = new HashMap<>()
@@ -28,31 +27,27 @@ public class Logic {
                 );
             }
         };*/
-        MainMenuChoices = new String[] {"Spielen", "Fragen hinzufuegen", "Statistiken", "Beenden"};
-        StatisticChoices = new String[] {"Allgemein", "Fragenspezifisch"};
+        MainMenuChoices = new String[]{"Spielen", "Fragen hinzufuegen", "Statistiken", "Beenden"};
+        StatisticChoices = new String[]{"Allgemein", "Fragenspezifisch", "Kategoriespezifisch", "Statistiken zurücksetzten"};
     }
 
-    public void RunGame()
-    {
+    public void RunGame() {
         System.out.println("Hallo und herzlich willkommen zur Lernsoftware!");
 
-        while(true)
-        {
+        while (true) {
             MainMenuChoice();
         }
     }
 
-    private void MainMenuChoice()
-    {
+    private void MainMenuChoice() {
         System.out.println();
         System.out.println("Sie befinden sich im Hauptmenue");
         var mainchoice = HelperClass.createChoiceMenuString("Folgende Aktionen stehen zur Auswahl:", MainMenuChoices);
         System.out.println(mainchoice);
 
-        var userChoice = HelperClass.GetInputInt("Was wollen Sie tun? ", 1,5);
+        var userChoice = HelperClass.GetInputInt("Was wollen Sie tun? ", 1, 5);
 
-        switch(userChoice)
-        {
+        switch (userChoice) {
             case 1:
                 PlayQuiz();
                 break;
@@ -70,8 +65,7 @@ public class Logic {
         }
     }
 
-    private void PlayQuiz()
-    {
+    private void PlayQuiz() {
         var categoryNames = this.categories.keySet().toArray(new String[this.categories.size()]);
 
         System.out.println();
@@ -82,15 +76,13 @@ public class Logic {
 
         var numberOfQuestions = HelperClass.GetInputInt("Wieviele Fragen wollen Sie beantworten (max. 10)? ", 1, 10);
 
-        AskQuestions(categoryIndex == 0 ? "" : categoryNames[categoryIndex-1], numberOfQuestions);
+        AskQuestions(categoryIndex == 0 ? "" : categoryNames[categoryIndex - 1], numberOfQuestions);
     }
 
-    private void AskQuestions(String category, int numberOfQuestions)
-    {
+    private void AskQuestions(String category, int numberOfQuestions) {
         Question[] questions = HelperClass.GenerateRandomQuestions(numberOfQuestions, GetQuestionListForCategory(category));
 
-        if(questions == null)
-        {
+        if (questions == null) {
             System.out.println("This category doesn't hold that many questions!");
             return;
         }
@@ -98,47 +90,41 @@ public class Logic {
         System.out.println();
 
         int correctQuestions = 0;
-        for(int i = 0; i<numberOfQuestions; i++)
-        {
-            System.out.println("Frage " + (i+1) + ":");
+        for (int i = 0; i < numberOfQuestions; i++) {
+            System.out.println("Frage " + (i + 1) + ":");
 
-            if(questions[i].alternateAnswers != null) {
-                var answerArray = HelperClass.GenerateRandomAnswerArray(questions[i].answer, questions[i].alternateAnswers);
-                var question = HelperClass.createChoiceMenuString(questions[i].question, answerArray);
+            if (questions[i].getAlternateAnswers() != null) {
+                var answerArray = HelperClass.GenerateRandomAnswerArray(questions[i].getAnswer(), questions[i].getAlternateAnswers());
+                var question = HelperClass.createChoiceMenuString(questions[i].getQuestion(), answerArray);
                 System.out.println(question);
                 var userAnswerIndex = HelperClass.GetInputInt("Ihre Antwort: ", 1, answerArray.length);
 
-                if (questions[i].answer.equalsIgnoreCase(answerArray[userAnswerIndex - 1])) {
+                if (questions[i].getAnswer().equalsIgnoreCase(answerArray[userAnswerIndex - 1])) {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
-                    questions[i].correctAnswers++;
+                    questions[i].addToCorrectAnswers(1);
                 } else {
-                    System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'.");
-                    questions[i].wrongAnswers++;
+                    System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].getAnswer() + "'.");
+                    questions[i].addToWrongAnswer(1);
                 }
-            }
-            else
-            {
-                System.out.println(questions[i].question);
+            } else {
+                System.out.println(questions[i].getQuestion());
                 var userAnswer = HelperClass.GetInputText("Ihre Antwort: ");
 
-                if(questions[i].answer.equalsIgnoreCase(userAnswer))
-                {
+                if (questions[i].getAnswer().equalsIgnoreCase(userAnswer)) {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
-                    questions[i].correctAnswers++;
-                }
-                else
-                {
-                    System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].answer + "'");
-                    questions[i].wrongAnswers++;
+                    questions[i].addToCorrectAnswers(1);
+                } else {
+                    System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].getAnswer() + "'");
+                    questions[i].addToWrongAnswer(1);
                 }
             }
 
             System.out.println();
         }
 
-        if(!category.equals("")) {
+        if (!category.equals("")) {
             JsonHelper.saveQuestionsToFile(categories.get(category), category);
         } else {
             JsonHelper.saveAllCategoriesToFile(categories);
@@ -146,15 +132,13 @@ public class Logic {
         System.out.println("Sie haben " + correctQuestions + " von " + numberOfQuestions + " Fragen richtig beantwortet!");
     }
 
-    private ArrayList<Question> GetQuestionListForCategory(String category)
-    {
-        if(!category.equals("")) return categories.get(category);
+    private ArrayList<Question> GetQuestionListForCategory(String category) {
+        if (!category.equals("")) return categories.get(category);
 
         ArrayList<Question> allQuestions = new ArrayList<>();
 
         //var tempKeyIndex = 0;
-        for (String key : categories.keySet())
-        {
+        for (String key : categories.keySet()) {
             allQuestions.addAll(categories.get(key));
 
             /*for(int i = 0; i< categories.get(key).size(); i++)
@@ -166,21 +150,20 @@ public class Logic {
         return allQuestions;
     }
 
-    private void AddQuestionMenu()
-    {
+    private void AddQuestionMenu() {
         ArrayList<String> menuOptions = new ArrayList<>(categories.keySet());
         menuOptions.add("Neue Katerogie Erstellen");
         menuOptions.add("Zurück");
 
         System.out.println(HelperClass.createChoiceMenuString("Zu welcher Kategorie soll die neue Frage hinzugefügt werden?", menuOptions));
-        var userChoice = HelperClass.GetInputInt("Wählen sie eine Option:  ", 1,menuOptions.size());
+        var userChoice = HelperClass.GetInputInt("Wählen sie eine Option:  ", 1, menuOptions.size());
 
-        if(userChoice == menuOptions.size()) {
+        if (userChoice == menuOptions.size()) {
             MainMenuChoice();
-        } else if(userChoice == menuOptions.size()-1) {
+        } else if (userChoice == menuOptions.size() - 1) {
             addCategorie();
         } else {
-            AddQuestion(menuOptions.get(userChoice-1));
+            AddQuestion(menuOptions.get(userChoice - 1));
         }
 
         JsonHelper.saveAllCategoriesToFile(categories);
@@ -189,11 +172,11 @@ public class Logic {
     private void addCategorie() {
         System.out.println("\nNeue Kategorie erstellen:\n");
         String categorie = HelperClass.GetInputText("Wie soll die Kategorie heissen? ");
-        while(categories.containsKey(categorie))  {
+        while (categories.containsKey(categorie)) {
             categorie = HelperClass.GetInputText("Diese Katerogie existirt bereits.\nBitte andere Bezeichnung eingeben:");
         }
         int userChoice = HelperClass.simpleMenu("Katerogie " + categorie + " wird erstellt", ": ", "Fortsetzen und erste Frage zu " + categorie + " hinzufügen", "Abbrechen und zurück ins Hauptmenu");
-        if(userChoice == 1) {
+        if (userChoice == 1) {
             categories.put(categorie, new ArrayList<>());
             AddQuestion(categorie);
         } else {
@@ -209,13 +192,13 @@ public class Logic {
 
         System.out.println(HelperClass.createChoiceMenuString("\nGibt altenative Antwortmöglichkeiten oder ist es eine Input-Frage?", "alternative Antworten", "Input-Frage"));
         int userChoice = HelperClass.GetInputInt("Wähle einen Fragen Typ: ", 1, 2);
-        if(userChoice == 1) {
+        if (userChoice == 1) {
             userChoice = 0;
             ArrayList<String> alternateAnswersTMP = new ArrayList<>();
             while (userChoice != 2) {
                 alternateAnswersTMP.add(HelperClass.GetInputText("\nAlternative (falsche) Antwortmöglichkeit: "));
 
-                if(alternateAnswersTMP.size() < 4) {
+                if (alternateAnswersTMP.size() < 4) {
                     System.out.println(HelperClass.createChoiceMenuString("", "Weitere Antwortmöglichkeit", "Fertig"));
                     userChoice = HelperClass.GetInputInt(": ", 1, 2);
                 } else {
@@ -225,11 +208,11 @@ public class Logic {
             alternateAnswers = alternateAnswersTMP.toArray(String[]::new);
         }
 
-        Question question = new Question(questionText, correctAnswer, alternateAnswers, 0 , 0);
-        userChoice = HelperClass.simpleMenu("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n", ": ","Ja", "Nein");
-        if(userChoice == 1) {
+        Question question = new Question(questionText, correctAnswer, alternateAnswers, 0, 0);
+        userChoice = HelperClass.simpleMenu("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n", ": ", "Ja", "Nein");
+        if (userChoice == 1) {
             categories.get(categorie).add(question);
-            if(JsonHelper.saveQuestionsToFile(categories.get(categorie), categorie)) {
+            if (JsonHelper.saveQuestionsToFile(categories.get(categorie), categorie)) {
                 System.out.println("Frage wurde zu " + categorie + " hinzugefügt und gespeichert!\n");
             } else {
                 System.err.println("Fehler beim Speichern!");
@@ -238,15 +221,14 @@ public class Logic {
             System.out.println("Frage wurde verworfen!");
         }
         userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + categorie + " hinzufügen", "Zurück ins Hauptmenu");
-        if(userChoice == 1) {
+        if (userChoice == 1) {
             AddQuestion(categorie);
         } else {
             MainMenuChoice();
         }
     }
 
-    private void ShowStatistics()
-    {
+    private void ShowStatistics() {
         var globalStats = HelperClass.CreateGlobalStatValues(categories);
         System.out.println();
 
@@ -272,8 +254,8 @@ public class Logic {
         }
 
     }
-    private void ResetQuestions()
-    {
+
+    private void ResetQuestions() {
         categories = null;
         categories = JsonHelper.ReturnQuestionsAndCategories();
     }
