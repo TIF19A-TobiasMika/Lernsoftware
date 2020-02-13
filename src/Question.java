@@ -25,6 +25,18 @@ public class Question {
         return question;
     }
 
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public void setAlternateAnswers(String[] alternateAnswers) {
+        this.alternateAnswers = alternateAnswers;
+    }
+
     public String getAnswer() {
         return answer;
     }
