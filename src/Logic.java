@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class Logic {
 
@@ -10,7 +11,7 @@ public class Logic {
     public Logic() {
         categories = JsonHelper.ReturnQuestionsAndCategories();
 
-        MainMenuChoices = new String[]{"Spielen", "Fragen hinzufuegen", "Statistiken", "Beenden"};
+        MainMenuChoices = new String[]{"Spielen", "Bearbeitungsmodus", "Statistiken", "Beenden"};
         StatisticChoices = new String[]{"Allgemein", "Fragenspezifisch", "Kategoriespezifisch", "Statistiken zurücksetzten"};
     }
 
@@ -35,7 +36,7 @@ public class Logic {
                 PlayQuiz();
                 break;
             case 2:
-                AddQuestionMenu();
+                editMenu();
                 break;
             case 3:
                 ShowStatistics();
@@ -126,23 +127,125 @@ public class Logic {
         return allQuestions;
     }
 
-    private void AddQuestionMenu() {
+    private void editMenu() {
         ArrayList<String> menuOptions = new ArrayList<>(categories.keySet());
         menuOptions.add("Neue Katerogie Erstellen");
         menuOptions.add("Zurück");
-
-        System.out.println(HelperClass.createChoiceMenuString("Zu welcher Kategorie soll die neue Frage hinzugefügt werden?", menuOptions));
-        var userChoice = HelperClass.GetInputInt("Waehlen sie eine Option:  ", 1, menuOptions.size());
-
+        int userChoice = HelperClass.simpleMenu("Welche Katerogie möchten sie editieren?", ": ", menuOptions);
         if (userChoice == menuOptions.size()) {
             MainMenuChoice();
         } else if (userChoice == menuOptions.size() - 1) {
             addCategorie();
         } else {
-            AddQuestion(menuOptions.get(userChoice - 1));
+            editCategory(menuOptions.get(userChoice - 1));
+        }
+    }
+
+    private void editCategory(String category) {
+        int userChoice = HelperClass.simpleMenu("Waehlen sie eine Option", ": ", "Frage hinzufügen", "Fragen bearbeiten", "Katerogie umbenennen", "Katerogie loeschen", "Zurück");
+        switch (userChoice) {
+            case 1: addQuestion(category); break;
+            case 2: editQuestions(category); break;
+            case 3: renameCategory(category); break;
+            case 4: deleteCategory(category); break;
+            case 5: editMenu();
+        }
+    }
+
+    private void deleteCategory(String category) {
+        if(HelperClass.getBoolean("Sind sie sicher, dass sie die Kategorie " + category + " loeschen wollen?")) {
+            categories.remove(category);
+            if (JsonHelper.removeCategoryFile(category)) {
+                System.out.println("Katerogie wurde erfolgreich geloescht\n");
+            } else {
+                System.err.println("Fehler beim Loeschen!");
+            }
+        }
+    }
+
+    private void renameCategory(String category) {
+        String newName = HelperClass.GetInputText("Neuer Name für die Katerogie: ");
+        if(HelperClass.getBoolean("Sind sie sicher, dass sie " + category + " in " + newName + " umbenennen wollen?")) {
+            ArrayList<Question> tmp = categories.get(category);
+            categories.remove(category);
+            categories.put(newName, tmp);
+            if(JsonHelper.renameQuestionsFile(category, newName)) {
+                System.out.println("Katerogie " + category + " wurde erfolgreich in " + newName + " umbennant");
+            } else {
+                System.err.println("Datei konnte nicht umbennant werden, Namensaenderung ist nicht permanent");
+            }
+        }
+    }
+
+    private void editQuestions(String categoryName) {
+        ArrayList<Question> category = categories.get(categoryName);
+        ArrayList<String> questionStrings = category.stream().map(Question::getQuestion).collect(Collectors.toCollection(ArrayList::new));
+        questionStrings.add("Zurueck");
+        /*String[] questionStrings = new String[category.size()+1];
+        for (int i = 0; i < category.size(); i++) {
+            questionStrings[i] = category.get(i).getAnswer();
+        }*/
+
+        int userChoice = HelperClass.simpleMenu("Waehle eine Frage", ": ", questionStrings);
+        if(userChoice == questionStrings.size()) {
+            editCategory(categoryName);
+        } else {
+            Question question = category.get(userChoice-1);
+            if(editQuestion(question)) {
+                if (JsonHelper.saveQuestionsToFile(category, categoryName)) {
+                    System.out.println("Frage wurde bearbeitet und gespeichert!\n");
+                } else {
+                    System.err.println("Fehler beim Speichern!");
+                }
+            }
+        }
+    }
+
+    private boolean editQuestion(Question question) {
+        System.out.println(question);
+
+        ArrayList<String> options = new ArrayList<>();
+        options.add("Frage");
+        options.add("Antwort");
+        options.add("Alternative Antworten");
+        options.add("Statistik Zurücksetzten");
+        options.add("Abbrechen");
+
+        while (true) {
+            int userChoice = HelperClass.simpleMenu("Was willst du bearbeiten?", ": ", options);
+            if (userChoice == 1) {
+                System.out.println("Derzeitige Frage: " + question.getQuestion());
+                question.setQuestion(HelperClass.GetInputText("Neuer Fragetext: "));
+                if (options.size() <= 5) {
+                    options.add("Speichern");
+                }
+            } else if (userChoice == 2) {
+                System.out.println("Derzeitige Antworten: " + question.getAnswer());
+                question.setAnswer(HelperClass.GetInputText("Neue Antwort: "));
+                if (options.size() <= 5) {
+                    options.add("Speichern");
+                }
+            } else if (userChoice == 3) {
+                //TODO: Edit Alternate Answers
+            } else if (userChoice == 4) {
+                question.resetStats();
+            } else if (userChoice == 5) {
+                if (options.size() <= 5) {
+                    return false;
+                } else {
+                    if (HelperClass.getBoolean("Aenderungen gehen verloren, sind sie sicher, dass sie abbrechen wollen? ")) {
+                        return false;
+                    }
+                }
+            } else if (userChoice == 6) {
+                System.out.println(question);
+                if(HelperClass.getBoolean("Soll die Frage so gespeichert werden?")) {
+                    return true;
+                }
+            }
         }
 
-        JsonHelper.saveAllCategoriesToFile(categories);
+
     }
 
     private void addCategorie() {
@@ -154,14 +257,14 @@ public class Logic {
         int userChoice = HelperClass.simpleMenu("Kategorie " + categorie + " wird erstellt", ": ", "Fortsetzen und erste Frage zu " + categorie + " hinzufügen", "Abbrechen und zurück ins Hauptmenu");
         if (userChoice == 1) {
             categories.put(categorie, new ArrayList<>());
-            AddQuestion(categorie);
+            addQuestion(categorie);
         } else {
             MainMenuChoice();
         }
     }
 
-    private void AddQuestion(String categorie) {
-        System.out.println("\nNeue Frage zu " + categorie + " hinzufuegen:\n");
+    private void addQuestion(String category) {
+        System.out.println("\nNeue Frage zu " + category + " hinzufuegen:\n");
         String questionText = HelperClass.GetInputText("Wie lautet ihre Frage? ");
         String correctAnswer = HelperClass.GetInputText("Wie lautet die korrekte Antwort? ");
         String[] alternateAnswers = null;
@@ -187,18 +290,18 @@ public class Logic {
         Question question = new Question(questionText, correctAnswer, alternateAnswers, 0, 0);
         userChoice = HelperClass.simpleMenu("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n", ": ", "Ja", "Nein");
         if (userChoice == 1) {
-            categories.get(categorie).add(question);
-            if (JsonHelper.saveQuestionsToFile(categories.get(categorie), categorie)) {
-                System.out.println("Frage wurde zu " + categorie + " hinzugefuegt und gespeichert!\n");
+            categories.get(category).add(question);
+            if (JsonHelper.saveQuestionsToFile(categories.get(category), category)) {
+                System.out.println("Frage wurde zu " + category + " hinzugefuegt und gespeichert!\n");
             } else {
                 System.err.println("Fehler beim Speichern!");
             }
         } else {
             System.out.println("Frage wurde verworfen!");
         }
-        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + categorie + " hinzufügen", "Zurück ins Hauptmenu");
+        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + category + " hinzufügen", "Zurück ins Hauptmenu");
         if (userChoice == 1) {
-            AddQuestion(categorie);
+            addQuestion(category);
         } else {
             MainMenuChoice();
         }
