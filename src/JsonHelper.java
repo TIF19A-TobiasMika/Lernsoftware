@@ -47,6 +47,11 @@ public class JsonHelper {
         }
     }
 
+    static boolean removeCategoryFile(String category) {
+        File file = new File("categories/" + category + ".json");
+        return file.delete();
+    }
+
     static boolean saveQuestionsToFile(ArrayList<Question> questions, String category) {
         //questions.stream().forEach(System.out::println);
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -62,6 +67,16 @@ public class JsonHelper {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static boolean renameQuestionsFile(String altName, String newName) {
+        File file = new File("categories/" + altName + ".json");
+        File newFile = new File("categories/" + newName + ".json");
+        if(newFile.exists()) {
+            return false;
+        } else {
+            return file.renameTo(newFile);
         }
     }
 }
