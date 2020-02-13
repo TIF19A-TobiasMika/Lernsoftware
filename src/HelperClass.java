@@ -156,4 +156,19 @@ public class HelperClass {
             return false;
         }
     }
+
+    public static boolean getBoolean(String s) {
+        System.out.println(s);
+        while (true) {
+            System.out.print("(Ja|Nein): ");
+            String input = scanner.nextLine().toLowerCase();
+            if(input.equals("ja") || input.equals("j") || input.equals("yes") || input.equals("y")) {
+                return true;
+            }
+            if(input.equals("nein") || input.equals("n") || input.equals("no")) {
+                return false;
+            }
+        }
+
+    }
 }
