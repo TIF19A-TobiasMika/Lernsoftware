@@ -35,6 +35,11 @@ public class HelperClass {
         return GetInputInt(inputQuestion, 1, options.length);
     }
 
+    static int simpleMenu(String title, String inputQuestion, ArrayList<String> options) {
+        System.out.print(createChoiceMenuString(title, options));
+        return GetInputInt(inputQuestion, 1, options.size());
+    }
+
     static String GetInputText(String question)
     {
         System.out.print(question);
