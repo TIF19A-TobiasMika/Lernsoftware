@@ -169,7 +169,7 @@ public class Logic {
             ArrayList<Question> tmp = categories.get(category);
             categories.remove(category);
             categories.put(newName, tmp);
-            if(JsonHelper.renameQuestionsFile(category, newName)) {
+            if(JsonHelper.renameQuestionsFile(category, newName, tmp)) {
                 System.out.println("Katerogie " + category + " wurde erfolgreich in " + newName + " umbennant");
             } else {
                 System.err.println("Datei konnte nicht umbennant werden, Namensaenderung ist nicht permanent");

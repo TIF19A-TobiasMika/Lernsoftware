@@ -14,9 +14,11 @@ public class JsonHelper {
         try {
             JsonReader jsonReader = new JsonReader(new FileReader(file));
             Gson gson = new Gson();
-            return gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {
+            ArrayList<Question> questions = gson.fromJson(jsonReader, new TypeToken<ArrayList<Question>>() {
             }.getType());
-        } catch (FileNotFoundException e) {
+            jsonReader.close();
+            return questions;
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -29,12 +31,12 @@ public class JsonHelper {
             try {
                 for (File file : Objects.requireNonNull(dir.listFiles())) {
                     String filename = file.getName();
-                    filename = filename.substring(0, filename.length()-5);
+                    filename = filename.substring(0, filename.length() - 5);
                     //System.out.println(filename);
                     categories.put(filename, getQuestionsFromFile(file));
                 }
                 return categories;
-            } catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         }
@@ -42,7 +44,7 @@ public class JsonHelper {
     }
 
     static void saveAllCategoriesToFile(HashMap<String, ArrayList<Question>> categories) {
-        for(String key : categories.keySet()) {
+        for (String key : categories.keySet()) {
             saveQuestionsToFile(categories.get(key), key);
         }
     }
@@ -57,7 +59,8 @@ public class JsonHelper {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
-        String json = gson.toJson(questions, new TypeToken<ArrayList<Question>>(){}.getType());
+        String json = gson.toJson(questions, new TypeToken<ArrayList<Question>>() {
+        }.getType());
         //Write JSON file
         try (FileWriter file = new FileWriter("categories/" + category + ".json")) {
             file.write(json);
@@ -70,13 +73,14 @@ public class JsonHelper {
         }
     }
 
-    public static boolean renameQuestionsFile(String altName, String newName) {
-        File file = new File("categories/" + altName + ".json");
-        File newFile = new File("categories/" + newName + ".json");
-        if(newFile.exists()) {
-            return false;
+    public static boolean renameQuestionsFile(String altName, String newName, ArrayList<Question> category) {
+        if (saveQuestionsToFile(category, newName)) {
+            if (!removeCategoryFile(altName)) {
+                System.err.println("Alte Datei (" + altName + ".json) konnte nicht geloescht werden!");
+            }
+            return true;
         } else {
-            return file.renameTo(newFile);
+            return false;
         }
     }
 }
