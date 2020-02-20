@@ -90,8 +90,8 @@ public class Question {
     }
 
     public void resetStats() {
-        correctAnswers = 0;
-        wrongAnswers = 0;
+        setCorrectAnswers(0);
+        setWrongAnswers(0);
     }
 
     public void printDetailedStats() {
