@@ -142,9 +142,9 @@ public class Logic {
 
     private void editMenu() {
         ArrayList<String> menuOptions = new ArrayList<>(categories.keySet());
-        menuOptions.add("Neue Katerogie Erstellen");
+        menuOptions.add("Neue Kategorie Erstellen");
         menuOptions.add("Zurück");
-        int userChoice = HelperClass.simpleMenu("Welche Katerogie möchten sie editieren?", ": ", menuOptions);
+        int userChoice = HelperClass.simpleMenu("Welche Kategorie möchten sie editieren?", ": ", menuOptions);
         if (userChoice == menuOptions.size()) {
             MainMenuChoice();
         } else if (userChoice == menuOptions.size() - 1) {
@@ -155,7 +155,7 @@ public class Logic {
     }
 
     private void editCategory(String category) {
-        int userChoice = HelperClass.simpleMenu("Waehlen sie eine Option", ": ", "Frage hinzufügen", "Fragen bearbeiten", "Katerogie umbenennen", "Katerogie loeschen", "Zurück");
+        int userChoice = HelperClass.simpleMenu("Waehlen sie eine Option", ": ", "Frage hinzufuegen", "Fragen bearbeiten", "Katerogie umbenennen", "Katerogie loeschen", "Zurueck");
         switch (userChoice) {
             case 1: addQuestion(category); break;
             case 2: editQuestions(category); break;
@@ -177,13 +177,13 @@ public class Logic {
     }
 
     private void renameCategory(String category) {
-        String newName = HelperClass.GetInputText("Neuer Name für die Katerogie: ");
+        String newName = HelperClass.GetInputText("Neuer Name für die Kategorie: ");
         if(HelperClass.getBoolean("Sind sie sicher, dass sie " + category + " in " + newName + " umbenennen wollen?")) {
             ArrayList<Question> tmp = categories.get(category);
             categories.remove(category);
             categories.put(newName, tmp);
             if(JsonHelper.renameQuestionsFile(category, newName, tmp)) {
-                System.out.println("Katerogie " + category + " wurde erfolgreich in " + newName + " umbennant");
+                System.out.println("Kategorie " + category + " wurde erfolgreich in " + newName + " umbennant");
             } else {
                 System.err.println("Datei konnte nicht umbennant werden, Namensaenderung ist nicht permanent");
             }
@@ -265,7 +265,7 @@ public class Logic {
         System.out.println("\nNeue Kategorie erstellen:\n");
         String categorie = HelperClass.GetInputText("Wie soll die Kategorie heissen? ");
         while (categories.containsKey(categorie)) {
-            categorie = HelperClass.GetInputText("Diese Kategorie existirt bereits.\nBitte andere Bezeichnung eingeben:");
+            categorie = HelperClass.GetInputText("Diese Kategorie existiert bereits.\nBitte andere Bezeichnung eingeben:");
         }
         int userChoice = HelperClass.simpleMenu("Kategorie " + categorie + " wird erstellt", ": ", "Fortsetzen und erste Frage zu " + categorie + " hinzufügen", "Abbrechen und zurück ins Hauptmenu");
         if (userChoice == 1) {
@@ -312,7 +312,7 @@ public class Logic {
         } else {
             System.out.println("Frage wurde verworfen!");
         }
-        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + category + " hinzufügen", "Zurück ins Hauptmenu");
+        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + category + " hinzufuegen", "Zurück ins Hauptmenu");
         if (userChoice == 1) {
             addQuestion(category);
         } else {
