@@ -29,7 +29,7 @@ public class Logic {
         var mainchoice = HelperClass.createChoiceMenuString("Folgende Aktionen stehen zur Auswahl:", MainMenuChoices);
         System.out.println(mainchoice);
 
-        var userChoice = HelperClass.GetInputInt("Was wollen Sie tun? ", 1, 5);
+        var userChoice = HelperClass.GetInputInt("Was wollen Sie tun? ", 1, MainMenuChoices.length);
 
         switch (userChoice) {
             case 1:
@@ -44,8 +44,6 @@ public class Logic {
             case 4:
                 System.exit(0);
                 break;
-            case 5:
-                JsonHelper.saveAllCategoriesToFile(categories);
         }
     }
 

@@ -1,15 +1,15 @@
 [
   {
-    "question": "Was ergibt -22 + 44",
-    "answer": "22",
-    "correctAnswers": 2,
-    "wrongAnswers": 0
-  },
-  {
     "question": "Was ist 5*12 + 6*3",
     "answer": "78",
     "correctAnswers": 1,
     "wrongAnswers": 1
+  },
+  {
+    "question": "Was ergibt -22 + 44",
+    "answer": "22",
+    "correctAnswers": 2,
+    "wrongAnswers": 0
   },
   {
     "question": "Was berechnet ein Integral?",
