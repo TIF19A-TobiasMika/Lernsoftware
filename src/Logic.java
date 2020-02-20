@@ -77,12 +77,18 @@ public class Logic {
         for (int i = 0; i < numberOfQuestions; i++) {
             System.out.println("Frage " + (i + 1) + ":");
 
-            if (questions[i].getAlternateAnswers() != null) {
+            // Check if alternate Answers are available for question
+            if (questions[i].getAlternateAnswers() != null)
+            {
+                //Get randomized answer array for question
                 var answerArray = HelperClass.GenerateRandomAnswerArray(questions[i].getAnswer(), questions[i].getAlternateAnswers());
+
+                // Generate question output, print question and get answer index as user input
                 var question = HelperClass.createChoiceMenuString(questions[i].getQuestion(), answerArray);
                 System.out.println(question);
                 var userAnswerIndex = HelperClass.GetInputInt("Ihre Antwort: ", 1, answerArray.length);
 
+                // Use user input index to compare user answer to correct answer
                 if (questions[i].getAnswer().equalsIgnoreCase(answerArray[userAnswerIndex - 1])) {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
@@ -91,10 +97,13 @@ public class Logic {
                     System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].getAnswer() + "'.");
                     questions[i].addToWrongAnswer(1);
                 }
-            } else {
+            } else
+                {
+                //No alternate answers available, so question gets printed to get user input
                 System.out.println(questions[i].getQuestion());
                 var userAnswer = HelperClass.GetInputText("Ihre Antwort: ");
 
+                // Check if user answer matches correct answer (case insensitive)
                 if (questions[i].getAnswer().equalsIgnoreCase(userAnswer)) {
                     System.out.println("Richtige Antwort!");
                     correctQuestions++;
@@ -108,17 +117,23 @@ public class Logic {
             System.out.println();
         }
 
+        // Saving stat values for questions
         if (!category.equals("")) {
             JsonHelper.saveQuestionsToFile(categories.get(category), category);
         } else {
             JsonHelper.saveAllCategoriesToFile(categories);
         }
+
+        // Print game stats when all questions are answered
         System.out.println("Sie haben " + correctQuestions + " von " + numberOfQuestions + " Fragen richtig beantwortet!");
     }
 
-    private ArrayList<Question> GetQuestionListForCategory(String category) {
+    private ArrayList<Question> GetQuestionListForCategory(String category)
+    {
+        // Standard Case, when category is selected
         if (!category.equals("")) return categories.get(category);
 
+        //Gets all questions from all categories, when no category is specified
         ArrayList<Question> allQuestions = new ArrayList<>();
 
         for (String key : categories.keySet()) {

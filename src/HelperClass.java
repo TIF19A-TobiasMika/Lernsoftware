@@ -60,11 +60,12 @@ public class HelperClass {
             }
             catch (Exception e)
             {
-                System.out.print("Invalid input. Please write a number: ");
+                System.out.print("Ungueltige Eingabe! Bitte geben Sie eine Zahl ein: ");
             }
         }
     }
 
+    // Overloaded method GetInputInt with value boundaries
     static int GetInputInt(String question, int startBoundary, int endBoundary)
     {
         System.out.print(question);
@@ -79,7 +80,7 @@ public class HelperClass {
 
                 if(startBoundary> intInput || endBoundary < intInput)
                 {
-                    System.out.print("Please enter a number from " + startBoundary + " to " + endBoundary + ": ");
+                    System.out.print("Bitte geben Sie eine Nummer von " + startBoundary + " bis " + endBoundary + " ein: ");
                     continue;
                 }
 
@@ -87,19 +88,22 @@ public class HelperClass {
             }
             catch (Exception e)
             {
-                System.out.print("Invalid input. Please write a number: ");
+                System.out.print("Ungueltige Eingabe! Bitte geben Sie eine Zahl ein: ");
             }
         }
     }
 
     static Question [] GenerateRandomQuestions(int amount, ArrayList<Question> questionCollection)
     {
+        // Prevent Exception if there aren't enough questions in the selected category
         if(amount> questionCollection.size()) return null;
 
         Question [] randomQuestionArray = new Question[amount];
 
+        // Sort questions by wrong answers descending
         Collections.sort(questionCollection, new SortByWrongAnswers());
 
+        // Add questions for output according to requested amount
         for(var i = 0; i < amount; i++)
         {
             randomQuestionArray[i] = questionCollection.get(i);
@@ -110,11 +114,12 @@ public class HelperClass {
 
     static String [] GenerateRandomAnswerArray(String answer, String [] alternateAnswers)
     {
+        // Combine correct answer and (if existing) alternate Answers
         ArrayList<String> answerList = new ArrayList<>();
         answerList.add(answer);
-
         answerList.addAll(Arrays.asList(alternateAnswers));
 
+        // Randomize answer order
         Collections.shuffle(answerList);
 
         return answerList.toArray(new String[ alternateAnswers.length+1]);
@@ -124,8 +129,10 @@ public class HelperClass {
     {
         int [] globalStats = new int[] {0, 0, 0};
 
+        // for each category of questions
         for (String key : questions.keySet())
         {
+            //for each question in category add number of wrong/correct answers to globalStats
             for(int i = 0; i<questions.get(key).size(); i++)
             {
                 var tempQuestion = questions.get(key).get(i);
@@ -134,6 +141,7 @@ public class HelperClass {
             }
         }
 
+        // Calculate total amount of answered questions
         globalStats[2] = globalStats[0] + globalStats[1];
 
         return globalStats;
