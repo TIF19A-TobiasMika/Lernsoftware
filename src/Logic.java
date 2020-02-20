@@ -335,8 +335,8 @@ public class Logic {
                 return;
             }
             System.out.println("Fragen insgesamt: " + globalStats[2]);
-            System.out.println("Davon richtig beantwortet: " + globalStats[1] + " (in Prozent: " + (((double) (globalStats[1]) / globalStats[2]) * 100) + "%)");
-            System.out.println("Davon falsch beantwortet: " + globalStats[0] + " (in Prozent: " + (((double) (globalStats[0]) / globalStats[2]) * 100) + "%)");
+            System.out.println("Davon richtig beantwortet: " + globalStats[1] + " (in Prozent: " + (Math.round(((double) (globalStats[1]) / globalStats[2]) * 100)) + "%)");
+            System.out.println("Davon falsch beantwortet: " + globalStats[0] + " (in Prozent: " + (Math.round(((double) (globalStats[0]) / globalStats[2]) * 100)) + "%)");
         } else if (userInput == 2) {
             for (String category : categories.keySet()) {
                 System.out.println("------ " + category + " ------");
