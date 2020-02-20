@@ -109,6 +109,11 @@ public class HelperClass {
             randomQuestionArray[i] = questionCollection.get(i);
         }
 
+        //Shuffle selected questions for random display order
+        var questionArrayList = Arrays.asList(randomQuestionArray);
+        Collections.shuffle(questionArrayList);
+        questionArrayList.toArray(randomQuestionArray);
+
         return randomQuestionArray;
     }
 
