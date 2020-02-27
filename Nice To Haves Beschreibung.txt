@@ -1,0 +1,13 @@
+Nice To Haves:
+
+Ausführliche Statistikfunktion für
+	- Allgemeine Statistiken
+	- Kategoriespezifische Statistiken
+	- Fragenspezifische Statistiken
+	- Statistiken zurücksetzen
+
+Umfangreiche Fragenbearbeitung zum:
+	- Hinzufügen neuer Fragen/Kategorien
+	- Bearbeiten von Fragen/Kategorien
+	- Löschen von Fragen/Kategorien
+	- Statistiken von einzelnen Fragen zurücksetzen
