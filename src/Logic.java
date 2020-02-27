@@ -7,6 +7,7 @@ public class Logic {
     private HashMap<String, ArrayList<Question>> categories;
     private String[] MainMenuChoices;
     private String[] StatisticChoices;
+    final static int maxAlternateAnswers = 4;
 
     public Logic() {
         categories = JsonHelper.ReturnQuestionsAndCategories();
@@ -142,16 +143,21 @@ public class Logic {
         return allQuestions;
     }
 
+    //Einstiegs Punkt für den Editormodus
     private void editMenu() {
+        //Stellt alle Kategorien als Auswahl zur Verfuegung
         ArrayList<String> menuOptions = new ArrayList<>(categories.keySet());
         menuOptions.add("Neue Katerogie Erstellen");
         menuOptions.add("Zurück");
         int userChoice = HelperClass.simpleMenu("Welche Katerogie möchten sie editieren?", ": ", menuOptions);
         if (userChoice == menuOptions.size()) {
+            //Letzte Option ist Zurueck und geht damit ins Hauptmenu zurueck
             MainMenuChoice();
         } else if (userChoice == menuOptions.size() - 1) {
+            //Vorletzte Option ist "Neue Kategorie erstellen"
             addCategorie();
         } else {
+            //Editor für die Ausgewaehlte Kategorie
             editCategory(menuOptions.get(userChoice - 1));
         }
     }
@@ -159,16 +165,25 @@ public class Logic {
     private void editCategory(String category) {
         int userChoice = HelperClass.simpleMenu("Waehlen sie eine Option", ": ", "Frage hinzufügen", "Fragen bearbeiten", "Katerogie umbenennen", "Katerogie loeschen", "Zurück");
         switch (userChoice) {
-            case 1: addQuestion(category); break;
-            case 2: editQuestions(category); break;
-            case 3: renameCategory(category); break;
-            case 4: deleteCategory(category); break;
-            case 5: editMenu();
+            case 1:
+                addQuestion(category);
+                break;
+            case 2:
+                editQuestions(category);
+                break;
+            case 3:
+                renameCategory(category);
+                break;
+            case 4:
+                deleteCategory(category);
+                break;
+            case 5:
+                editMenu();
         }
     }
 
     private void deleteCategory(String category) {
-        if(HelperClass.getBoolean("Sind sie sicher, dass sie die Kategorie " + category + " loeschen wollen?")) {
+        if (HelperClass.getBoolean("Sind sie sicher, dass sie die Kategorie " + category + " loeschen wollen?")) {
             categories.remove(category);
             if (JsonHelper.removeCategoryFile(category)) {
                 System.out.println("Katerogie wurde erfolgreich geloescht\n");
@@ -180,11 +195,11 @@ public class Logic {
 
     private void renameCategory(String category) {
         String newName = HelperClass.GetInputText("Neuer Name für die Katerogie: ");
-        if(HelperClass.getBoolean("Sind sie sicher, dass sie " + category + " in " + newName + " umbenennen wollen?")) {
+        if (HelperClass.getBoolean("Sind sie sicher, dass sie " + category + " in " + newName + " umbenennen wollen?")) {
             ArrayList<Question> tmp = categories.get(category);
             categories.remove(category);
             categories.put(newName, tmp);
-            if(JsonHelper.renameQuestionsFile(category, newName, tmp)) {
+            if (JsonHelper.renameQuestionsFile(category, newName, tmp)) {
                 System.out.println("Katerogie " + category + " wurde erfolgreich in " + newName + " umbennant");
             } else {
                 System.err.println("Datei konnte nicht umbennant werden, Namensaenderung ist nicht permanent");
@@ -202,11 +217,11 @@ public class Logic {
         }*/
 
         int userChoice = HelperClass.simpleMenu("Waehle eine Frage", ": ", questionStrings);
-        if(userChoice == questionStrings.size()) {
+        if (userChoice == questionStrings.size()) {
             editCategory(categoryName);
         } else {
-            Question question = category.get(userChoice-1);
-            if(editQuestion(question)) {
+            Question question = category.get(userChoice - 1);
+            if (editQuestion(question, categoryName)) {
                 if (JsonHelper.saveQuestionsToFile(category, categoryName)) {
                     System.out.println("Frage wurde bearbeitet und gespeichert!\n");
                 } else {
@@ -216,52 +231,122 @@ public class Logic {
         }
     }
 
-    private boolean editQuestion(Question question) {
-        System.out.println(question);
+    //gibt true zurueck wenn etwas editiert wurde
+    boolean editQuestion(Question question, String categoryName) {
+        System.out.println("\n" + question.toString() + "\n");
 
         ArrayList<String> options = new ArrayList<>();
         options.add("Frage");
         options.add("Antwort");
         options.add("Alternative Antworten");
         options.add("Statistik Zurücksetzten");
+        options.add("Loeschen");
         options.add("Abbrechen");
 
         while (true) {
             int userChoice = HelperClass.simpleMenu("Was willst du bearbeiten?", ": ", options);
-            if (userChoice == 1) {
-                System.out.println("Derzeitige Frage: " + question.getQuestion());
-                question.setQuestion(HelperClass.GetInputText("Neuer Fragetext: "));
-                if (options.size() <= 5) {
-                    options.add("Speichern");
-                }
-            } else if (userChoice == 2) {
-                System.out.println("Derzeitige Antworten: " + question.getAnswer());
-                question.setAnswer(HelperClass.GetInputText("Neue Antwort: "));
-                if (options.size() <= 5) {
-                    options.add("Speichern");
-                }
-            } else if (userChoice == 3) {
-                //TODO: Edit Alternate Answers
-            } else if (userChoice == 4) {
-                question.resetStats();
-            } else if (userChoice == 5) {
-                if (options.size() <= 5) {
-                    return false;
-                } else {
-                    if (HelperClass.getBoolean("Aenderungen gehen verloren, sind sie sicher, dass sie abbrechen wollen? ")) {
-                        return false;
+            switch (userChoice) {
+                case 1: //Frage Text editieren
+                    System.out.println("Derzeitige Frage: " + question.getQuestion());
+                    question.setQuestion(HelperClass.GetInputText("Neuer Fragetext: "));
+                    if (options.size() <= 6) {
+                        options.add("Speichern");
                     }
-                }
-            } else if (userChoice == 6) {
-                System.out.println(question);
-                if(HelperClass.getBoolean("Soll die Frage so gespeichert werden?")) {
-                    return true;
-                }
+                    break;
+                case 2: //Antwort Text editieren
+                    System.out.println("Derzeitige Antworten: " + question.getAnswer());
+                    question.setAnswer(HelperClass.GetInputText("Neue Antwort: "));
+                    if (options.size() <= 6) {
+                        options.add("Speichern");
+                    }
+                    break;
+                case 3: //Alternative Antworten editieren
+                    if (editAlternateAnswers(question)) {
+                        if (options.size() <= 6) {
+                            options.add("Speichern");
+                        }
+                    }
+                    break;
+                case 4: //Statistiken der Frage zuruecksetzen
+                    question.resetStats();
+                    break;
+                case 5: //Frage loeschen
+                    if (HelperClass.getBoolean("Sind sie sicher, dass sie diese Frage loeschen moechten?")) {
+                        categories.get(categoryName).remove(question);
+                        return true;
+                    }
+                    break;
+                case 6: //Bearbeiten abbrechen
+                    if (options.size() <= 6) {
+                        return false;
+                    } else {
+                        if (HelperClass.getBoolean("Aenderungen gehen verloren, sind sie sicher, dass sie abbrechen wollen? ")) {
+                            return false;
+                        }
+                    }
+                    break;
+                case 7: //Frage speichern
+                    System.out.println(question);
+                    if (HelperClass.getBoolean("Soll die Frage so gespeichert werden?")) {
+                        return true;
+                    }
+                    break;
             }
         }
-
-
     }
+
+    //gibt true zurueck wenn etwas editiert wurde
+    boolean editAlternateAnswers(Question question) {
+        ArrayList<String> options = new ArrayList<>();
+        String menuTitle;
+        if (question.getAlternateAnswers() == null) {
+            menuTitle = "Waehlen sie eine der Optionen:";
+            options.add("Alternative Antwort hinzufuegen");
+            System.out.println("Dies ist eine Input-Frage");
+        } else {
+            menuTitle = "Waehlen sie die Alternative Antwort, welche sie bearbeiten moecheten oder eine der Optionen:";
+            options.add("Alternative Antwort hinzufuegen\n------------Antworten---------------");
+            options.addAll(question.getAlternateAnswers());
+            int lastIndex = options.size() - 1;
+            options.set(lastIndex, options.get(lastIndex) + "\n------------------------------------");
+            options.add("In Input Frage umwandeln");
+        }
+        options.add("Fertig");
+
+        int userChoice = HelperClass.simpleMenu(menuTitle, "?:", options);
+        if (userChoice == options.size()) {
+            return false;
+        } else if (userChoice == 1) {
+            if (question.getAlternateAnswers() != null && question.getAlternateAnswers().size() >= Logic.maxAlternateAnswers) {
+                System.out.println("Maximale Anzahl alternativer Antworten erreicht, loeschen sie erst eine andere");
+                return false;
+            } else {
+                question.addAlternateAnswer(HelperClass.GetInputText("Geben sie eine alternative (falsche) Antwort ein: "));
+                return true;
+            }
+        } else if (userChoice == options.size() - 1) {
+            if (HelperClass.getBoolean("Sind sie sicher das sie die Frage in eine Input Frage umwandeln wollen?\n Dadurch werden alle Alternativen Antworten geloeschtl!")) {
+                question.setAlternateAnswers(null);
+                return true;
+            }
+        } else {
+            int index = userChoice - 2;
+            switch (HelperClass.simpleMenu("Aktuelle Antwort: " + question.getAlternateAnswer(index), "?:", "Bearbeiten", "Loeschen", "Abbrechen")) {
+                case 1:
+                    question.setAlternateAnswers(index, HelperClass.GetInputText("Neuer alternative Antwort Text:"));
+                    return true;
+                case 2:
+                    if (HelperClass.getBoolean("Bist du sicher?")) {
+                        question.removeAlternateAnswer(index);
+                    }
+                    return true;
+                case 3:
+                    return false;
+            }
+        }
+        return false;
+    }
+
 
     private void addCategorie() {
         System.out.println("\nNeue Kategorie erstellen:\n");
@@ -282,44 +367,44 @@ public class Logic {
         System.out.println("\nNeue Frage zu " + category + " hinzufuegen:\n");
         String questionText = HelperClass.GetInputText("Wie lautet ihre Frage? ");
         String correctAnswer = HelperClass.GetInputText("Wie lautet die korrekte Antwort? ");
-        String[] alternateAnswers = null;
+        ArrayList<String> alternateAnswers = null;
 
         System.out.println(HelperClass.createChoiceMenuString("\nGibt altenative Antwortmoeglichkeiten oder ist es eine Input-Frage?", "alternative Antworten", "Input-Frage"));
         int userChoice = HelperClass.GetInputInt("Waehle einen Fragen Typ: ", 1, 2);
         if (userChoice == 1) {
             userChoice = 0;
-            ArrayList<String> alternateAnswersTMP = new ArrayList<>();
+            alternateAnswers = new ArrayList<>();
             while (userChoice != 2) {
-                alternateAnswersTMP.add(HelperClass.GetInputText("\nAlternative (falsche) Antwortmoeglichkeit: "));
+                alternateAnswers.add(HelperClass.GetInputText("\nAlternative (falsche) Antwortmoeglichkeit: "));
 
-                if (alternateAnswersTMP.size() < 4) {
+                if (alternateAnswers.size() < maxAlternateAnswers) {
                     System.out.println(HelperClass.createChoiceMenuString("", "Weitere Antwortmoeglichkeit", "Fertig"));
                     userChoice = HelperClass.GetInputInt(": ", 1, 2);
                 } else {
                     userChoice = 2;
                 }
             }
-            alternateAnswers = alternateAnswersTMP.toArray(String[]::new);
         }
 
         Question question = new Question(questionText, correctAnswer, alternateAnswers, 0, 0);
-        userChoice = HelperClass.simpleMenu("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n", ": ", "Ja", "Nein");
-        if (userChoice == 1) {
+        //userChoice = HelperClass.simpleMenu(, ": ", "Ja", "Nein");
+        if (HelperClass.getBoolean("Wollen sie folgende Frage speichern?\n" + question.toString() + "\n")) {
             categories.get(category).add(question);
             if (JsonHelper.saveQuestionsToFile(categories.get(category), category)) {
                 System.out.println("Frage wurde zu " + category + " hinzugefuegt und gespeichert!\n");
             } else {
                 System.err.println("Fehler beim Speichern!");
             }
+            userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + category + " hinzufügen", "Zurück ins Hauptmenu");
+            if (userChoice == 1) {
+                addQuestion(category);
+            } else {
+                MainMenuChoice();
+            }
         } else {
             System.out.println("Frage wurde verworfen!");
         }
-        userChoice = HelperClass.simpleMenu("Wollen sie...", ": ", "Eine weitere Frage zu " + category + " hinzufügen", "Zurück ins Hauptmenu");
-        if (userChoice == 1) {
-            addQuestion(category);
-        } else {
-            MainMenuChoice();
-        }
+        MainMenuChoice();
     }
 
     private void ShowStatistics() {
