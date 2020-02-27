@@ -79,8 +79,7 @@ public class Logic {
             System.out.println("Frage " + (i + 1) + ":");
 
             // Check if alternate Answers are available for question
-            if (questions[i].getAlternateAnswers() != null)
-            {
+            if (questions[i].getAlternateAnswers() != null) {
                 //Get randomized answer array for question
                 var answerArray = HelperClass.GenerateRandomAnswerArray(questions[i].getAnswer(), questions[i].getAlternateAnswers());
 
@@ -98,8 +97,7 @@ public class Logic {
                     System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + questions[i].getAnswer() + "'.");
                     questions[i].addToWrongAnswer(1);
                 }
-            } else
-                {
+            } else {
                 //No alternate answers available, so question gets printed to get user input
                 System.out.println(questions[i].getQuestion());
                 var userAnswer = HelperClass.GetInputText("Ihre Antwort: ");
@@ -129,8 +127,7 @@ public class Logic {
         System.out.println("Sie haben " + correctQuestions + " von " + numberOfQuestions + " Fragen richtig beantwortet!");
     }
 
-    private ArrayList<Question> GetQuestionListForCategory(String category)
-    {
+    private ArrayList<Question> GetQuestionListForCategory(String category) {
         // Standard Case, when category is selected
         if (!category.equals("")) return categories.get(category);
 
@@ -431,19 +428,19 @@ public class Logic {
                     q.printStats();
                 }
             }
-        } else if(userInput == 3) {
+        } else if (userInput == 3) {
             String[] categoryOptions = categories.keySet().toArray(String[]::new);
             int choice = HelperClass.simpleMenu("Wählen sie eine Kategorie: ", ": ", categoryOptions);
-            String category = categoryOptions[choice-1];
+            String category = categoryOptions[choice - 1];
             System.out.println("------ " + category + " ------");
-            if(HelperClass.printCategoryStats(categories.get(category))) {
+            if (HelperClass.printCategoryStats(categories.get(category))) {
                 for (Question q : categories.get(category)) {
                     q.printDetailedStats();
                 }
             }
-        } else if(userInput == 4) {
-            for(ArrayList<Question> catergory : categories.values()) {
-                for(Question q : catergory) {
+        } else if (userInput == 4) {
+            for (ArrayList<Question> catergory : categories.values()) {
+                for (Question q : catergory) {
                     q.resetStats();
                 }
             }

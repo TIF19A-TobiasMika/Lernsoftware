@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class Question {
     private String question;
@@ -43,7 +41,7 @@ public class Question {
 
     public void removeAlternateAnswer(int index) {
         this.alternateAnswers.remove(index);
-        if(this.alternateAnswers.size() <= 0) {
+        if (this.alternateAnswers.size() <= 0) {
             this.alternateAnswers = null;
         }
     }
@@ -125,7 +123,7 @@ public class Question {
     }
 
     public void addAlternateAnswer(String getInputText) {
-        if(this.alternateAnswers == null) {
+        if (this.alternateAnswers == null) {
             this.alternateAnswers = new ArrayList<>();
         }
         this.alternateAnswers.add(getInputText);

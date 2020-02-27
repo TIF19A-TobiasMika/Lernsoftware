@@ -9,7 +9,7 @@
     "question": "Was ist 5*12 + 6*3",
     "answer": "78",
     "correctAnswers": 1,
-    "wrongAnswers": 1
+    "wrongAnswers": 2
   },
   {
     "question": "Was berechnet ein Integral?",

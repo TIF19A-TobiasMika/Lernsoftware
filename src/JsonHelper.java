@@ -30,17 +30,17 @@ public class JsonHelper {
             HashMap<String, ArrayList<Question>> categories = new HashMap<>();
             try {
                 for (File file : Objects.requireNonNull(dir.listFiles())) {
-                    if(file.isFile()) {
+                    if (file.isFile()) {
                         String filename = file.getName();
                         String extension = "";
 
                         int i = filename.lastIndexOf('.');
                         if (i >= 0) {
-                            extension = filename.substring(i+1);
+                            extension = filename.substring(i + 1);
                             //System.out.println(extension);
-                            if(extension.equals("json")) {
+                            if (extension.equals("json")) {
                                 ArrayList<Question> questions = getQuestionsFromFile(file);
-                                if(questions != null) {
+                                if (questions != null) {
                                     String categoryName = filename.substring(0, filename.length() - (extension.length() + 1));
                                     //System.out.println(categoryName);
                                     categories.put(categoryName, questions);
