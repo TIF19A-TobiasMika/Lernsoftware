@@ -1,7 +1,11 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 public class Question {
     private String question;
     private String answer;
-    private String[] alternateAnswers;
+    private ArrayList<String> alternateAnswers;
     private int correctAnswers;
     private int wrongAnswers;
 
@@ -33,19 +37,34 @@ public class Question {
         this.answer = answer;
     }
 
-    public void setAlternateAnswers(String[] alternateAnswers) {
+    public void setAlternateAnswers(ArrayList<String> alternateAnswers) {
         this.alternateAnswers = alternateAnswers;
+    }
+
+    public void removeAlternateAnswer(int index) {
+        this.alternateAnswers.remove(index);
+        if(this.alternateAnswers.size() <= 0) {
+            this.alternateAnswers = null;
+        }
+    }
+
+    public void setAlternateAnswers(int index, String alternateAnswer) {
+        this.alternateAnswers.set(index, alternateAnswer);
     }
 
     public String getAnswer() {
         return answer;
     }
 
-    public String[] getAlternateAnswers() {
+    public ArrayList<String> getAlternateAnswers() {
         return alternateAnswers;
     }
 
-    public Question(String question, String answer, String[] alternateAnswers, int correctAnswers, int wrongAnswers) {
+    public String getAlternateAnswer(int index) {
+        return alternateAnswers.get(index);
+    }
+
+    public Question(String question, String answer, ArrayList<String> alternateAnswers, int correctAnswers, int wrongAnswers) {
         this.question = question;
         this.answer = answer;
         this.alternateAnswers = alternateAnswers;
@@ -67,7 +86,7 @@ public class Question {
         sb.append(question);
         sb.append("\nAntwort: ");
         sb.append(answer);
-        if(alternateAnswers != null) {
+        if (alternateAnswers != null) {
             sb.append("\nAlternative Antworten: ");
             for (String str : alternateAnswers) {
                 sb.append("\n  ");
@@ -81,7 +100,7 @@ public class Question {
 
     public void printStats() {
         System.out.println("Frage: " + question);
-        if(correctAnswers + wrongAnswers > 0) {
+        if (correctAnswers + wrongAnswers > 0) {
             System.out.println(String.format("Insgesamt %d Mal beantwortet, davon %d%% Mal richtig\n", (correctAnswers + wrongAnswers), (correctAnswers * 100) / (correctAnswers + wrongAnswers)));
             //System.out.println(String.format("%dx Richtig beantwortet, %dx Falsch Beantwortet", correctAnswers, wrongAnswers));
         } else {
@@ -97,12 +116,19 @@ public class Question {
     public void printDetailedStats() {
         System.out.println("Frage: " + question);
         System.out.println("Richtige Antwort: " + answer);
-        if(correctAnswers + wrongAnswers > 0) {
+        if (correctAnswers + wrongAnswers > 0) {
             System.out.println(String.format("Insgesamt %d Mal beantwortet, davon %d%% Mal richtig", (correctAnswers + wrongAnswers), (correctAnswers * 100) / (correctAnswers + wrongAnswers)));
             System.out.println(String.format("%dx Richtig beantwortet, %dx Falsch Beantwortet\n", correctAnswers, wrongAnswers));
         } else {
             System.out.println("Diese Frage wurde noch nie beantwortet\n");
         }
+    }
+
+    public void addAlternateAnswer(String getInputText) {
+        if(this.alternateAnswers == null) {
+            this.alternateAnswers = new ArrayList<>();
+        }
+        this.alternateAnswers.add(getInputText);
     }
 
     public void addToCorrectAnswers(int i) {

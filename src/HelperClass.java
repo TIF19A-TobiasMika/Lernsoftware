@@ -112,17 +112,17 @@ public class HelperClass {
         return randomQuestionArray;
     }
 
-    static String [] GenerateRandomAnswerArray(String answer, String [] alternateAnswers)
+    static String [] GenerateRandomAnswerArray(String answer, ArrayList<String> alternateAnswers)
     {
         // Combine correct answer and (if existing) alternate Answers
         ArrayList<String> answerList = new ArrayList<>();
         answerList.add(answer);
-        answerList.addAll(Arrays.asList(alternateAnswers));
+        answerList.addAll(alternateAnswers);
 
         // Randomize answer order
         Collections.shuffle(answerList);
 
-        return answerList.toArray(new String[ alternateAnswers.length+1]);
+        return answerList.toArray(new String[ alternateAnswers.size()+1]);
     }
 
     static int[] CreateGlobalStatValues(HashMap<String, ArrayList<Question>> questions)
