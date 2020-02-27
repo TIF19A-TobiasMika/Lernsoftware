@@ -32,7 +32,7 @@ public class JsonHelper {
                 for (File file : Objects.requireNonNull(dir.listFiles())) {
                     if (file.isFile()) {
                         String filename = file.getName();
-                        String extension = "";
+                        String extension;
 
                         int i = filename.lastIndexOf('.');
                         if (i >= 0) {

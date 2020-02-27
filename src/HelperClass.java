@@ -2,7 +2,7 @@ import java.util.*;
 
 public class HelperClass {
 
-    static Scanner scanner = new Scanner(System.in);
+    static final Scanner scanner = new Scanner(System.in);
 
     static String createChoiceMenuString(String title, String... options) {
         StringBuilder sb = new StringBuilder();
@@ -88,7 +88,7 @@ public class HelperClass {
         Question[] randomQuestionArray = new Question[amount];
 
         // Sort questions by wrong answers descending
-        Collections.sort(questionCollection, new SortByWrongAnswers());
+        questionCollection.sort(new SortByWrongAnswers());
 
         // Add questions for output according to requested amount
         for (var i = 0; i < amount; i++) {

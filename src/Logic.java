@@ -4,9 +4,9 @@ import java.util.stream.Collectors;
 
 public class Logic {
 
-    private HashMap<String, ArrayList<Question>> categories;
-    private String[] MainMenuChoices;
-    private String[] StatisticChoices;
+    private final HashMap<String, ArrayList<Question>> categories;
+    private final String[] MainMenuChoices;
+    private final String[] StatisticChoices;
     final static int maxAlternateAnswers = 4;
 
     public Logic() {
