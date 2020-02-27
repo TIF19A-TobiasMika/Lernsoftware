@@ -33,7 +33,7 @@
     "wrongAnswers": 0
   },
   {
-    "question": "Wieviele Sterne sind auf der amerikanischen Flagge?",
+    "question": "Wie viele Sterne sind auf der amerikanischen Flagge?",
     "answer": "50",
     "correctAnswers": 0,
     "wrongAnswers": 0
@@ -50,7 +50,7 @@
     "alternateAnswers": [
       "Washington",
       "Quebec",
-      "Chicage"
+      "Chicago"
     ],
     "correctAnswers": 0,
     "wrongAnswers": 0
@@ -62,7 +62,7 @@
     "wrongAnswers": 0
   },
   {
-    "question": "Was gilt als tiefster Punkt des Weltmeeres?",
+    "question": "Was gilt als tiefster Punkt der Weltmeere?",
     "answer": "Marianengraben",
     "alternateAnswers": [
       "Bermudadreieck",

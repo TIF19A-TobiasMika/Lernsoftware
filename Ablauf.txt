@@ -11,7 +11,7 @@ Wähle eine Option:
 
 --- Bei 1 ---
 
-Katerogien:
+Kategorien:
 
 0) Alle
 1) Geographie
@@ -21,12 +21,12 @@ Katerogien:
 
 Wähle ...:
 
-Wie viele Fragen möchstets du beantworten (max 10) ?
+Wie viele Fragen möchtest du beantworten (max 10) ?
 
 
 Frage 1: 
 
-Fagldhlga?
+Frage 1?
 
 Antwort 1) 
 Antwort 2)
@@ -41,16 +41,16 @@ Deine Antwort war Richtig
 oder
 
 Deine Antwort war Falsch
-Richig wäre Antwort 1 gewesen
+Richtig wäre Antwort 1 gewesen
 
 
 
-Du hast 5 von 10 richtig beantowortet
+Du hast 5 von 10 richtig beantwortet
 
 
 
 
-Hauptmenue:
+Hauptmenü:
 
 ..
 
@@ -59,7 +59,7 @@ Hauptmenue:
 --- Bei 2 ---
 
 
-Zu welcher Kategorie möchstets du eine Frage hinzufügen?
+Zu welcher Kategorie möchtest du eine Frage hinzufügen?
 
 
 
@@ -70,7 +70,7 @@ Wie lautet die Frage
 
 Wie lautet die richtige Antwort
 
-möchstets du Antwortmöglichkeiten geben Y/N:
+möchtest du Antwortmöglichkeiten geben Y/N:
 
 
 Zusätzliche Antwortmöglichkeit 1

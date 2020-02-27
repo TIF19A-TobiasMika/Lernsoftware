@@ -27,8 +27,8 @@ public class Logic {
     private void MainMenuChoice() {
         System.out.println();
         System.out.println("Sie befinden sich im Hauptmenue");
-        var mainchoice = HelperClass.createChoiceMenuString("Folgende Aktionen stehen zur Auswahl:", MainMenuChoices);
-        System.out.println(mainchoice);
+        var mainChoice = HelperClass.createChoiceMenuString("Folgende Aktionen stehen zur Auswahl:", MainMenuChoices);
+        System.out.println(mainChoice);
 
         var userChoice = HelperClass.GetInputInt("Was wollen Sie tun? ", 1, MainMenuChoices.length);
 
@@ -150,7 +150,7 @@ public class Logic {
             MainMenuChoice();
         } else if (userChoice == menuOptions.size() - 1) {
             //Vorletzte Option ist "Neue Kategorie erstellen"
-            addCategorie();
+            addCategory();
         } else {
             //Editor für die Ausgewaehlte Kategorie
             editCategory(menuOptions.get(userChoice - 1));
@@ -343,16 +343,16 @@ public class Logic {
     }
 
 
-    private void addCategorie() {
+    private void addCategory() {
         System.out.println("\nNeue Kategorie erstellen:\n");
-        String categorie = HelperClass.GetInputText("Wie soll die Kategorie heissen? ");
-        while (categories.containsKey(categorie)) {
-            categorie = HelperClass.GetInputText("Diese Kategorie existiert bereits.\nBitte andere Bezeichnung eingeben:");
+        String category = HelperClass.GetInputText("Wie soll die Kategorie heissen? ");
+        while (categories.containsKey(category)) {
+            category = HelperClass.GetInputText("Diese Kategorie existiert bereits.\nBitte andere Bezeichnung eingeben:");
         }
-        int userChoice = HelperClass.simpleMenu("Kategorie " + categorie + " wird erstellt", ": ", "Fortsetzen und erste Frage zu " + categorie + " hinzufügen", "Abbrechen und zurück ins Hauptmenu");
+        int userChoice = HelperClass.simpleMenu("Kategorie " + category + " wird erstellt", ": ", "Fortsetzen und erste Frage zu " + category + " hinzufügen", "Abbrechen und zurück ins Hauptmenu");
         if (userChoice == 1) {
-            categories.put(categorie, new ArrayList<>());
-            addQuestion(categorie);
+            categories.put(category, new ArrayList<>());
+            addQuestion(category);
         } else {
             MainMenuChoice();
         }
@@ -437,8 +437,8 @@ public class Logic {
                 }
             }
         } else if (userInput == 4) {
-            for (ArrayList<Question> catergory : categories.values()) {
-                for (Question q : catergory) {
+            for (ArrayList<Question> category : categories.values()) {
+                for (Question q : category) {
                     q.resetStats();
                 }
             }
