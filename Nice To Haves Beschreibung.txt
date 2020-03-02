@@ -5,6 +5,7 @@ Ausführliche Statistikfunktion für
 	- Kategoriespezifische Statistiken
 	- Fragenspezifische Statistiken
 	- Statistiken zurücksetzen
+	- Auswahl der Fragen in der "Spielen"-Funktion über Anzahl falscher Antworten
 
 Umfangreiche Fragenbearbeitung zum:
 	- Hinzufügen neuer Fragen/Kategorien
