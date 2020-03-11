@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Logic {
@@ -10,14 +8,20 @@ public class Logic {
     private final String[] statisticChoices;
     private final String[] gameModes;
     final static int maxAlternateAnswers = 4;
+    final static int survivalLives = 3;
+    private final int[] millionaireLevels;
+    static Random random = new Random();;
 
     public Logic() {
         categories = JsonHelper.ReturnQuestionsAndCategories();
 
         mainMenuChoices = new String[]{"Spielen", "Bearbeitungsmodus", "Statistiken", "Beenden"};
         statisticChoices = new String[]{"Allgemein", "Fragenspezifisch", "Kategoriespezifisch", "Statistiken zurücksetzten"};
-        gameModes = new String[]{"Normal", "Ueberlebensmodus", "Wer wird Milionaer", "Fragen mit meisten Fehlern"};
+        gameModes = new String[]{"Normal", "Ueberlebensmodus", "Wer wird Millionaer", "Fragen mit meisten Fehlern"};
+        millionaireLevels = new int[]{50, 100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 500000, 1000000};
     }
+
+    private String[] categoriesToSave;
 
     public void runGame() {
         System.out.println("Hallo und herzlich willkommen zur Lernsoftware!");
@@ -51,6 +55,7 @@ public class Logic {
         }
     }
 
+    //Einstiegspunkt fuer den Spielmodus
     private void playMenu() {
         System.out.println();
         System.out.println("Sie befinden sich im Quiz-Modus");
@@ -58,7 +63,7 @@ public class Logic {
         int userChoice = HelperClass.simpleMenu("Welchen Spielmodus moechten sie spielen?", "Modus: ", gameModes);
         switch (userChoice) {
             case 1:
-                playNormalQuiz();
+                playQuiz();
                 break;
             case 2:
                 playSurvivalQuiz();
@@ -67,12 +72,25 @@ public class Logic {
                 playMillionaireQuiz();
                 break;
             case 4:
-                playMostWrongQuiz();
+                playQuiz(true);
                 break;
         }
     }
 
-    private void playNormalQuiz() {
+    //Speicher die Kategorien aus categoriesToSave
+    private void saveCategories() {
+        for (String category : categoriesToSave) {
+            JsonHelper.saveQuestionsToFile(categories.get(category), category);
+        }
+    }
+
+    private void playQuiz() {
+        playQuiz(false);
+    }
+
+    //Normaler Quizmodus mit frei waehlbarer Kategorie und Anzahl an Fragen
+    private void playQuiz(boolean mostWrong) {
+        //Eine Liste von Fragen aus einer oder mehrerne vom Nutzer gewaehlten Kategorien.
         ArrayList<Question> selectedQuestions = selectQuestions();
         while (selectedQuestions.size() <= 0) {
             System.out.println("Die ausgewaehlte(n) Kategorie(n) enthalten keine Fragen, bitte waehlen sie andere Kategorien\n");
@@ -80,52 +98,247 @@ public class Logic {
         }
         var numberOfQuestions = HelperClass.getInputInt("Wieviele Fragen wollen Sie beantworten (max. " + selectedQuestions.size() + " )? ", 1, selectedQuestions.size());
 
-        ArrayList<Question> questions = HelperClass.generateRandomQuestions(numberOfQuestions, selectedQuestions);
+        List<Question> questions;
+        if (mostWrong) {
+            //Sortiert die Liste nach den am meisten Falsch beantworteten Fragen und gibt eine Liste mit numberOfQuestions Fragen zurueck
+            questions = HelperClass.generateSortedRandomQuestions(numberOfQuestions, selectedQuestions);
+        } else {
+            //gibt eine Liste mit numberOfQuestions Fragen zurueck
+            questions = HelperClass.generateRandomQuestions(numberOfQuestions, selectedQuestions);
+        }
+
         int correctQuestions = 0;
         for (int i = 0; i < questions.size(); i++) {
-            System.out.println("Frage " + (i + 1) + ":");
+            System.out.println("\nFrage " + (i + 1) + ":");
             if (askQuestion(questions.get(i))) {
                 correctQuestions++;
             }
         }
         System.out.println("Sie haben " + correctQuestions + " von " + numberOfQuestions + " Fragen richtig beantwortet!");
+
+        //Speichert die Fragen in den Kategorien aus categoriesToSave (fuer die Statistik)
+        saveCategories();
     }
 
+    /*Ueberlebens Modus, es werden solange Fragen gestellt bis der Nutzer keine Leben mehr hat.
+    Bei Falsch beantworteten Fragen verliert der Nutzer ein Leben*/
     private void playSurvivalQuiz() {
-
+        ArrayList<Question> selectedQuestions = selectAllQuestions();
+        if (selectedQuestions.size() <= 0) {
+            System.out.println("Es sind keine Fragen vorhanden! Bitte fuegen sie erst welche hinzu.");
+            return;
+        }
+        int lives = survivalLives;
+        int correctQuestions = 0;
+        survivalLoop:
+        while (true) {
+            //Bringt die Fragen in eine zufaellige Reihenfolge
+            Collections.shuffle(selectedQuestions);
+            for (int i = 0; i < selectedQuestions.size(); i++) {
+                System.out.println("\nFrage " + (i + 1) + ":");
+                if (askQuestion(selectedQuestions.get(i))) {
+                    correctQuestions++;
+                } else {
+                    lives--;
+                    if (lives <= 0) {
+                        System.out.println("\nDas war leider ihr letztes Leben. Vielen Dank fuers Spielen");
+                        break survivalLoop;
+                    } else {
+                        System.out.println("\nSie haben noch " + lives + " Leben\n");
+                    }
+                }
+            }
+            System.out.println("Glueckwunsch sie sind einmal alle Fragen durch, ab jetzt wiederholen sich Fragen");
+        }
+        System.out.println("Sie haben " + correctQuestions + " Fragen richtig beantwortet!");
+        //Speichert alle Fragen bzw. deren neue Statistik
+        JsonHelper.saveAllCategoriesToFile(categories);
     }
 
     private void playMillionaireQuiz() {
+        ArrayList<Question> selectedQuestions = selectAllChoiceQuestions(2);
 
-    }
+        if (selectedQuestions.size() < millionaireLevels.length) {
+            System.out.println("Es sind zu wenige Fragen vorhanden! Bitte fuegen sie mehr hinzu.");
+            return;
+        }
+        System.out.println("Wilkommen bei wer wird Millinaer, baentworten sie alle " + millionaireLevels.length + " Fragen richtig um zu gewinnen.");
+        System.out.println("Außerdem haben sie einen 50/50 Joker und einen Publikums Joker");
+        //A Qustion for each Level, sorted so that Level 1 gets the Question with the least wrong Answers and the last Level that with the most
+        Question[] levelQuestions = HelperClass.createMillionaireLevels(selectedQuestions, millionaireLevels.length);
+        //Liste noch vorfuegbarer Joker
+        ArrayList<String> jokers = new ArrayList<>();
+        jokers.add("50/50 Joker");
+        jokers.add("Publikums Joker");
+        boolean audienceJoker = false;
 
-    private void playMostWrongQuiz() {
+        //Loop for each Level
+        questionLoop:
+        for (int i = 0; i < millionaireLevels.length; i++) {
+            audienceJoker = false;
+            Question levelQuestion = levelQuestions[i];
+            System.out.println("\n" + millionaireLevels[i] + "€ Frage:");
+            // Check if alternate Answers are available for question
+            if (levelQuestion.getAlternateAnswers() != null) {
+                //Get randomized answer array for question
+                var answerArray = HelperClass.generateRandomAnswerArray(levelQuestion.getAnswer(), levelQuestion.getAlternateAnswers());
 
-    }
+                while (jokers.size() > 0) {
+                    System.out.println(HelperClass.createChoiceMenuString(levelQuestion.getQuestion(), answerArray));
 
-    private ArrayList<Question> selectQuestions() {
-        ArrayList<Question> selectedQuestions = new ArrayList<>();
-        String[] categoryNames = this.categories.keySet().toArray(String[]::new);
-        String menuQuestion = "Aus welcher Kategorie sollen Fragen gestellt werden?" +
-                "\nFuer einen Mix aus allen Kategorien schreiben Sie einfach '0'." +
-                "\nFuer mehrere Kategorien auf einmal, geben sie deren Nummern kommgetrennt an (z.B. 2,3).";
-        System.out.println(HelperClass.createChoiceMenuString(menuQuestion, categoryNames));
+                    System.out.println("Verfügbare Joker:");
+                    for (int j = 1; j <= jokers.size(); j++) {
+                        System.out.println(String.format("%d) %s", j + answerArray.size(), jokers.get(j - 1)));
+                    }
+                    var userAnswerIndex = HelperClass.getInputInt("Ihre Antwort, oder waehlen sie einen Joker: ", 1, answerArray.size() + jokers.size());
 
-        var categoryIndex = HelperClass.getInputInts("Welche Kategorien (0 fuer Alle)? ", 0, categoryNames.length);
+                    if (userAnswerIndex > answerArray.size()) {
+                        String joker = jokers.get(userAnswerIndex - answerArray.size() - 1);
+                        System.out.println("Sie haben den " + joker + " gewaehlt!");
+                        if (joker.equals("50/50 Joker")) {
+                            var alternateAnswersArray = levelQuestion.getAlternateAnswers();
+                            Collections.shuffle(alternateAnswersArray);
+                            answerArray = HelperClass.generateRandomAnswerArray(levelQuestion.getAnswer(), alternateAnswersArray.subList(0, alternateAnswersArray.size() / 2));
+                            if(audienceJoker) {
+                                addPercentages(answerArray, levelQuestion.getAnswer());
+                            }
+                            jokers.remove("50/50 Joker");
+                            System.out.println("\nEinige der falschen Antworten wurden entfernt");
+                        } else if (joker.equals("Publikums Joker")) {
+                            jokers.remove("Publikums Joker");
+                            audienceJoker = true;
+                            addPercentages(answerArray, levelQuestion.getAnswer());
+                            System.out.println("\nDas Publikum hat abgestimmt, die Ergebnisse (in %) stehen neben den Fragen");
+                        }
+                    } else {
+                        // Use user input index to compare user answer to correct answer
+                        String pickedAnswer = answerArray.get(userAnswerIndex - 1);
+                        if(audienceJoker) {
+                            pickedAnswer = pickedAnswer.split(",")[0];
+                        }
+                        if (levelQuestion.getAnswer().equalsIgnoreCase(pickedAnswer)) {
+                            System.out.println("Richtige Antwort!");
+                            levelQuestion.addToCorrectAnswers(1);
+                            continue questionLoop;
+                        } else {
+                            System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + levelQuestion.getAnswer() + "'.");
+                            levelQuestion.addToWrongAnswer(1);
+                            System.out.println("Damit haben sie leider Verloren, bis zum naechsten Mal");
 
+                            return;
+                        }
+                    }
+                }
+                var userAnswerIndex = HelperClass.simpleMenu(levelQuestion.getQuestion(), "Ihre Antwort: ", answerArray);
 
-        if (categoryIndex.contains(0)) {
-            for (ArrayList<Question> cat : categories.values()) {
-                selectedQuestions.addAll(cat);
+                // Use user input index to compare user answer to correct answer
+                String pickedAnswer = answerArray.get(userAnswerIndex - 1);
+                if(audienceJoker) {
+                    pickedAnswer = pickedAnswer.split(",")[0];
+                }
+                if (levelQuestion.getAnswer().equalsIgnoreCase(pickedAnswer)) {
+                    System.out.println("Richtige Antwort!");
+                    levelQuestion.addToCorrectAnswers(1);
+                } else {
+                    System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + levelQuestion.getAnswer() + "'.");
+                    System.out.println("Damit haben sie leider Verloren, bis zum naechsten Mal");
+                    levelQuestion.addToWrongAnswer(1);
+                    return;
+                }
+            } else {
+                System.err.println("Hier sollten keine Input Fragen vorkommen!");
             }
-        } else {
-            for (Integer index : categoryIndex) {
-                selectedQuestions.addAll(categories.get(categoryNames[index - 1]));
+        }
+        System.out.println("Herrzlichen Glueckwunsch sie haben alle " + millionaireLevels.length + " Fragen Richtig beantwortet und die 1.000.000€ gewonnen!");
+        JsonHelper.saveAllCategoriesToFile(categories);
+    }
+
+    //Adds "Random" Percentages to the Answers. Needed for the the Audiece Joker
+    private void addPercentages(ArrayList<String> answerArray, String correctQuestion) {
+        //Creates an Array and fills it with Rnadom Numbers between 10 und 100
+        int[] percentages = new int[answerArray.size()];
+        int percentagesSum = 0;
+        for (int k = 0; k < answerArray.size(); k++) {
+            percentages[k] = 10 + random.nextInt(91);
+            percentagesSum += percentages[k];
+        }
+        int sum = 0;
+        //Makes it so that the sum auf all Numebers in the Array equal 100
+        for (int k = 0; k < answerArray.size(); k++) {
+            percentages[k] = (percentages[k]*100)/percentagesSum;
+            sum += percentages[k];
+        }
+        //Sorts the Array
+        Arrays.sort(percentages);
+        //Picks the largest or second largest Number for the correct Answer
+        int correctIndex = percentages.length - (1 + random.nextInt(2));
+        int answerIndex = answerArray.size()-1;
+        //Adds the rounding Errors to the correct Percentage
+        percentages[correctIndex] += (100 - sum);
+        //Matches the Questions to a Percantage
+        for (int j = 0; j < answerArray.size(); j++) {
+            String answer = answerArray.get(j);
+            if(answer.equals(correctQuestion)) {
+                answerIndex = j;
+                answerArray.set(j, String.format("%s,    %d%%", answer, percentages[correctIndex]));
+            } else if(j == correctIndex) {
+                answerArray.set(j, String.format("%s,    %d%%", answer, percentages[answerIndex]));
+            } else {
+                answerArray.set(j, String.format("%s,    %d%%", answer, percentages[j]));
+            }
+        }
+    }
+
+    //Gibt eien Liste mit allen Multiple Choice Fragen, welche die Mnidestanzahl an alternativen Antworten haben, zurueck
+    private ArrayList<Question> selectAllChoiceQuestions(int minAltChoices) {
+        ArrayList<Question> selectedQuestions = new ArrayList<>();
+        for (ArrayList<Question> cat : categories.values()) {
+            for (Question q : cat) {
+                if (q.getAlternateAnswers() != null && q.getAlternateAnswers().size() >= minAltChoices) {
+                    selectedQuestions.add(q);
+                }
             }
         }
         return selectedQuestions;
     }
 
+    /*Laesst den Nutzer Kategorien auswaehlen und gibt dann
+     * alle Fragen in den gewahlten Kategorien zurueck*/
+    private ArrayList<Question> selectQuestions() {
+        ArrayList<Question> selectedQuestions = new ArrayList<>();
+        String[] categoryNames = this.categories.keySet().toArray(String[]::new);
+        String menuQuestion = "\nAus welcher Kategorie sollen Fragen gestellt werden?" +
+                "\nFuer einen Mix aus allen Kategorien schreiben Sie einfach '0'." +
+                "\nFuer mehrere Kategorien auf einmal, geben sie deren Nummern kommgetrennt an (z.B. 2,3).";
+        System.out.println(HelperClass.createChoiceMenuString(menuQuestion, categoryNames));
+
+        //Ein Set mit den vom Nutzer gewaehlten Kategoreien
+        Set<Integer> categoryIndex = HelperClass.getInputInts("Welche Kategorien (0 fuer Alle)? ", 0, categoryNames.length);
+
+        //Wenn das categoryIndex Set 0 enthaelt sollen alle Fragen genommen werden
+        if (categoryIndex.contains(0)) {
+            for (ArrayList<Question> cat : categories.values()) {
+                selectedQuestions.addAll(cat);
+            }
+            //Nach dem Spiel muessen alle Kategorien gespeichert werden
+            categoriesToSave = categories.keySet().toArray(String[]::new);
+        } else {
+            //Liste der zu speichernden Kategorien
+            categoriesToSave = new String[categoryIndex.size()];
+            int saveIndex = 0;
+            //(i - 1) entspricht dem index in categoryNames
+            for (Integer i : categoryIndex) {
+                //Fuegt die Fragen aus der ensprechende Kategorie zu selectedQuestions hinzu
+                selectedQuestions.addAll(categories.get(categoryNames[i - 1]));
+                //Fuegt die dem index ensprechende Kategorie zur Speicherliste hinzu
+                categoriesToSave[saveIndex] = categoryNames[i - 1];
+                saveIndex++;
+            }
+        }
+        return selectedQuestions;
+    }
+
+    //Gibt eien Liste mit allen Fragen zurueck
     private ArrayList<Question> selectAllQuestions() {
         ArrayList<Question> selectedQuestions = new ArrayList<>();
         for (ArrayList<Question> cat : categories.values()) {
@@ -134,6 +347,7 @@ public class Logic {
         return selectedQuestions;
     }
 
+    //Fragt eine Frage ab, gibt zurueck ob diese richtig beantwortet wurde
     private boolean askQuestion(Question question) {
         // Check if alternate Answers are available for question
         if (question.getAlternateAnswers() != null) {
@@ -169,19 +383,6 @@ public class Logic {
         return false;
     }
 
-    private ArrayList<Question> GetQuestionListForCategory(String category) {
-        // Standard Case, when category is selected
-        if (!category.equals("")) return categories.get(category);
-
-        //Gets all questions from all categories, when no category is specified
-        ArrayList<Question> allQuestions = new ArrayList<>();
-
-        for (String key : categories.keySet()) {
-            allQuestions.addAll(categories.get(key));
-        }
-        return allQuestions;
-    }
-
     //Einstiegs Punkt für den Editormodus
     private void editMenu() {
         //Stellt alle Kategorien als Auswahl zur Verfuegung
@@ -201,6 +402,7 @@ public class Logic {
         }
     }
 
+    //Untermenu zum editieren einer Kategorie
     private void editCategory(String category) {
         int userChoice = HelperClass.simpleMenu("Waehlen sie eine Option", ": ", "Frage hinzufuegen", "Fragen bearbeiten", "Katerogie umbenennen", "Katerogie loeschen", "Zurueck");
         switch (userChoice) {
@@ -221,6 +423,7 @@ public class Logic {
         }
     }
 
+    //laesst den Nutzer eine Kategorie loeschen
     private void deleteCategory(String category) {
         if (HelperClass.getBoolean("Sind sie sicher, dass sie die Kategorie " + category + " loeschen wollen?")) {
             categories.remove(category);
@@ -232,8 +435,13 @@ public class Logic {
         }
     }
 
+    //Laesst den Nutzer eine Kategorie umbenennen
     private void renameCategory(String category) {
         String newName = HelperClass.getInputText("Neuer Name für die Kategorie: ");
+        while (categories.keySet().contains(newName)) {
+            System.out.println("Es gibt bereits eine Katergorie mit diesem Namen!");
+            newName = HelperClass.getInputText("Neuer Name für die Kategorie: ");
+        }
         if (HelperClass.getBoolean("Sind sie sicher, dass sie " + category + " in " + newName + " umbenennen wollen?")) {
             ArrayList<Question> tmp = categories.get(category);
             categories.remove(category);
@@ -246,6 +454,7 @@ public class Logic {
         }
     }
 
+    //Laesst den Nutzer eine Frage aus der Kategorie zu editieren auswaehlen
     private void editQuestions(String categoryName) {
         ArrayList<Question> category = categories.get(categoryName);
         ArrayList<String> questionStrings = category.stream().map(Question::getQuestion).collect(Collectors.toCollection(ArrayList::new));
@@ -270,7 +479,8 @@ public class Logic {
         }
     }
 
-    //gibt true zurueck wenn etwas editiert wurde
+    /*Laesst den Nutzer eine bestimmte Frage editieren
+    gibt true zurueck wenn etwas editiert wurde*/
     boolean editQuestion(Question question, String categoryName) {
         System.out.println("\n" + question.toString() + "\n");
 
@@ -386,7 +596,7 @@ public class Logic {
         return false;
     }
 
-
+    //Laesst den Nutzer eine neue Kategorie erstellen
     private void addCategory() {
         System.out.println("\nNeue Kategorie erstellen:\n");
         String category = HelperClass.getInputText("Wie soll die Kategorie heissen? ");
@@ -402,6 +612,7 @@ public class Logic {
         }
     }
 
+    //laesst den Nutzer eine neue Frage zur angegebenen Kategorie hinzufuegen
     private void addQuestion(String category) {
         System.out.println("\nNeue Frage zu " + category + " hinzufuegen:\n");
         String questionText = HelperClass.getInputText("Wie lautet ihre Frage? ");
@@ -446,6 +657,7 @@ public class Logic {
         mainMenuChoice();
     }
 
+    //Untermenu fuer Statistiken
     private void showStatistics() {
         var globalStats = HelperClass.createGlobalStatValues(categories);
         System.out.println();
@@ -486,6 +698,7 @@ public class Logic {
                     q.resetStats();
                 }
             }
+            JsonHelper.saveAllCategoriesToFile(categories);
         }
 
 

@@ -6,7 +6,6 @@ public class Question {
     private ArrayList<String> alternateAnswers;
     private int correctAnswers;
     private int wrongAnswers;
-    private String category;
 
     public int getCorrectAnswers() {
         return correctAnswers;
@@ -169,4 +168,8 @@ public class Question {
                 alternateAnswersEqual;
     }
 
+    public int getWrongAnswersPercent() {
+        int answersTotal = getWrongAnswers() + getCorrectAnswers();
+        return (getWrongAnswers() * 100) / (answersTotal == 0 ? 1 : answersTotal);
+    }
 }

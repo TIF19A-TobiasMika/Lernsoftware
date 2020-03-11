@@ -81,12 +81,19 @@ public class HelperClass {
         }
     }
 
-    static ArrayList<Question> generateRandomQuestions(int amount, ArrayList<Question> questions) {
+    static List<Question> generateRandomQuestions(int amount, ArrayList<Question> questions) {
         Collections.shuffle(questions);
-        return (ArrayList<Question>) questions.subList(0, amount);
+        return questions.subList(0, amount);
     }
 
-    static ArrayList<String> generateRandomAnswerArray(String answer, ArrayList<String> alternateAnswers) {
+    static List<Question> generateSortedRandomQuestions(int amount, ArrayList<Question> q) {
+        q.sort((question1, question2) -> question2.getWrongAnswersPercent() - question1.getWrongAnswersPercent());
+        List<Question> questions = q.subList(0, amount);
+        Collections.shuffle(questions);
+        return questions;
+    }
+
+    static ArrayList<String> generateRandomAnswerArray(String answer, List<String> alternateAnswers) {
         // Combine correct answer and (if existing) alternate Answers
         ArrayList<String> answerList = new ArrayList<>();
         answerList.add(answer);
@@ -173,5 +180,23 @@ public class HelperClass {
             }
             return inputInts;
         }
+    }
+
+    public static Question[] createMillionaireLevels(ArrayList<Question> selectedQuestions, int levelNum) {
+        selectedQuestions.sort(Comparator.comparingInt(Question::getWrongAnswersPercent));
+        int questionsPerLevel = selectedQuestions.size() / levelNum;
+        Question[] levels = new Question[levelNum];
+        /*for (Question q : selectedQuestions) {
+            System.out.println("Frage: " + q.getQuestion() + " Wrongs: " + q.getWrongAnswersPercent());
+        }*/
+        for (int i = 0; i < 15; i++) {
+            List<Question> levelQuestions = selectedQuestions.subList(i*questionsPerLevel, (i+1) * questionsPerLevel);
+            levels[i] = levelQuestions.get(Logic.random.nextInt(levelQuestions.size()));
+        }
+        /*System.out.println("-------Levels----------");
+        for(Question q : levels) {
+            System.out.println("Frage: " + q.getQuestion() + " Wrongs: " + q.getWrongAnswersPercent());
+        }*/
+        return levels;
     }
 }
