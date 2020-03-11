@@ -32,20 +32,20 @@ public class HelperClass {
 
     static int simpleMenu(String title, String inputQuestion, String... options) {
         System.out.print(createChoiceMenuString(title, options));
-        return GetInputInt(inputQuestion, 1, options.length);
+        return getInputInt(inputQuestion, 1, options.length);
     }
 
     static int simpleMenu(String title, String inputQuestion, ArrayList<String> options) {
         System.out.print(createChoiceMenuString(title, options));
-        return GetInputInt(inputQuestion, 1, options.size());
+        return getInputInt(inputQuestion, 1, options.size());
     }
 
-    static String GetInputText(String question) {
+    static String getInputText(String question) {
         System.out.print(question);
         return scanner.nextLine();
     }
 
-    static int GetInputInt(String question) {
+    static int getInputInt(String question) {
         System.out.print(question);
 
         while (true) {
@@ -60,7 +60,7 @@ public class HelperClass {
     }
 
     // Overloaded method GetInputInt with value boundaries
-    static int GetInputInt(String question, int startBoundary, int endBoundary) {
+    static int getInputInt(String question, int startBoundary, int endBoundary) {
         System.out.print(question);
 
         while (true) {
@@ -81,29 +81,12 @@ public class HelperClass {
         }
     }
 
-    static Question[] GenerateRandomQuestions(int amount, ArrayList<Question> questionCollection) {
-        // Prevent Exception if there aren't enough questions in the selected category
-        if (amount > questionCollection.size()) return null;
-
-        Question[] randomQuestionArray = new Question[amount];
-
-        // Sort questions by wrong answers descending
-        questionCollection.sort(new SortByWrongAnswers());
-
-        // Add questions for output according to requested amount
-        for (var i = 0; i < amount; i++) {
-            randomQuestionArray[i] = questionCollection.get(i);
-        }
-
-        //Shuffle selected questions for random display order
-        var questionArrayList = Arrays.asList(randomQuestionArray);
-        Collections.shuffle(questionArrayList);
-        questionArrayList.toArray(randomQuestionArray);
-
-        return randomQuestionArray;
+    static ArrayList<Question> generateRandomQuestions(int amount, ArrayList<Question> questions) {
+        Collections.shuffle(questions);
+        return (ArrayList<Question>) questions.subList(0, amount);
     }
 
-    static String[] GenerateRandomAnswerArray(String answer, ArrayList<String> alternateAnswers) {
+    static ArrayList<String> generateRandomAnswerArray(String answer, ArrayList<String> alternateAnswers) {
         // Combine correct answer and (if existing) alternate Answers
         ArrayList<String> answerList = new ArrayList<>();
         answerList.add(answer);
@@ -112,10 +95,10 @@ public class HelperClass {
         // Randomize answer order
         Collections.shuffle(answerList);
 
-        return answerList.toArray(new String[alternateAnswers.size() + 1]);
+        return answerList;
     }
 
-    static int[] CreateGlobalStatValues(HashMap<String, ArrayList<Question>> questions) {
+    static int[] createGlobalStatValues(HashMap<String, ArrayList<Question>> questions) {
         int[] globalStats = new int[]{0, 0, 0};
 
         // for each category of questions
@@ -165,5 +148,30 @@ public class HelperClass {
             }
         }
 
+    }
+
+    public static Set<Integer> getInputInts(String question, int startBoundary, int endBoundary) {
+        System.out.print(question);
+
+        outerLoop:
+        while (true) {
+            String input = scanner.nextLine();
+            String[] splitInputs = input.split(",");
+            Set<Integer> inputInts = new HashSet<>();
+
+            for (String splitInput : splitInputs) {
+                try {
+                    int val = Integer.parseInt(splitInput);
+                    if (startBoundary > val || endBoundary < val) {
+                        System.out.print("Bitte geben Sie nur Nummer von " + startBoundary + " bis " + endBoundary + " ein: ");
+                        continue outerLoop;
+                    }
+                    inputInts.add(val);
+                } catch (Exception e) {
+                    System.out.print("Ungueltige Eingabe! Bitte geben Sie nur (kommagetrennte) Zahlen ein: ");
+                }
+            }
+            return inputInts;
+        }
     }
 }

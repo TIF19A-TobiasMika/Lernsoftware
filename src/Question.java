@@ -6,6 +6,7 @@ public class Question {
     private ArrayList<String> alternateAnswers;
     private int correctAnswers;
     private int wrongAnswers;
+    private String category;
 
     public int getCorrectAnswers() {
         return correctAnswers;
@@ -136,4 +137,36 @@ public class Question {
     public void addToWrongAnswer(int i) {
         wrongAnswers += i;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Wenn es das gleiche Objekt ist dann true
+        if (obj == this) {
+            return true;
+        }
+
+        //Wenn es kein Question Objekz ist dann flase
+        if (!(obj instanceof Question)) {
+            return false;
+        }
+
+        // caste obj to Question
+        Question q = (Question) obj;
+
+        boolean alternateAnswersEqual;
+        if(this.getAlternateAnswers() == null) {
+            alternateAnswersEqual = q.getAlternateAnswers() == null;
+        } else {
+            if(q.getAlternateAnswers() == null) {
+                alternateAnswersEqual = false;
+            } else {
+                alternateAnswersEqual = this.getAlternateAnswers().equals(q.getAlternateAnswers());
+            }
+        }
+
+        return this.getQuestion().equals(q.getQuestion()) &&
+                this.getAnswer().equals(q.getAnswer()) &&
+                alternateAnswersEqual;
+    }
+
 }

@@ -3,6 +3,6 @@ public class Main {
 
     public static void main(String[] args) {
         logic = new Logic();
-        logic.RunGame();
+        logic.runGame();
     }
 }
