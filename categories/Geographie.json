@@ -18,7 +18,7 @@
       "Bahamas",
       "Syrien"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {
@@ -41,7 +41,7 @@
   {
     "question": "Zu welchem Kontinent gehoert Japan?",
     "answer": "Asien",
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {
@@ -69,7 +69,7 @@
       "Great Barrier Reef",
       "Niagara Falls"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {

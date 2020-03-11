@@ -8,7 +8,7 @@
       "1 Jahr"
     ],
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 7
   },
   {
     "question": "Wann begann der 2. Weltkrieg?",
@@ -19,19 +19,19 @@
       "03. August 1939"
     ],
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 2
   },
   {
     "question": "Welcher roemische Kaiser soll Rom angezuendet haben?",
     "answer": "Nero",
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 5
   },
   {
     "question": "Wer gilt als der Uebersetzer der Bibel ins Deutsche?",
     "answer": "Martin Luther",
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 21
   },
   {
     "question": "Wer gilt als der Entdecker Amerikas?",
@@ -42,7 +42,7 @@
       "Cook"
     ],
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 8
   },
   {
     "question": "Wer hat im 15. Jahrhundert den Buchdruck erfunden?",
@@ -53,7 +53,7 @@
       "Besserwald"
     ],
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 1
   },
   {
     "question": "Welcher roemische Herrscher fuehrte den Kalender, wie wir ihn kennen, ein?",
@@ -64,7 +64,7 @@
       "Augustus"
     ],
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 2
   },
   {
     "question": "Wie lautet der Nachname des ersten deutschen Bundeskanzlers seit 1949?",
@@ -76,7 +76,7 @@
     "question": "In welchem Jahr war der Mauerfall?",
     "answer": "1989",
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 7
   },
   {
     "question": "In welchem Jahr wurde der Euro als Bargeld eingefuehrt?",

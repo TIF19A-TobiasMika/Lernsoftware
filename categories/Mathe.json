@@ -3,7 +3,7 @@
     "question": "Was ist 5*12 + 6*3",
     "answer": "78",
     "correctAnswers": 1,
-    "wrongAnswers": 2
+    "wrongAnswers": 3
   },
   {
     "question": "Was ergibt -22 + 44",
@@ -43,7 +43,7 @@
       "Das Ergebnis ist groesser als 2"
     ],
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 1
   },
   {
     "question": "Wie lautet die dritte binomische Formel?",
@@ -60,7 +60,7 @@
     "question": "Was ergibt 20*4+5?",
     "answer": "85",
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 1
   },
   {
     "question": "Was ergibt Wurzel 2 * Wurzel 2?",
