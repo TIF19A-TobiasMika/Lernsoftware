@@ -10,7 +10,7 @@ public class Logic {
     final static int maxAlternateAnswers = 4;
     final static int survivalLives = 3;
     private final int[] millionaireLevels;
-    static Random random = new Random();;
+    static final Random random = new Random();
 
     public Logic() {
         categories = JsonHelper.ReturnQuestionsAndCategories();
@@ -170,7 +170,7 @@ public class Logic {
         ArrayList<String> jokers = new ArrayList<>();
         jokers.add("50/50 Joker");
         jokers.add("Publikums Joker");
-        boolean audienceJoker = false;
+        boolean audienceJoker;
 
         //Loop for each Level
         questionLoop:
@@ -199,7 +199,7 @@ public class Logic {
                             var alternateAnswersArray = levelQuestion.getAlternateAnswers();
                             Collections.shuffle(alternateAnswersArray);
                             answerArray = HelperClass.generateRandomAnswerArray(levelQuestion.getAnswer(), alternateAnswersArray.subList(0, alternateAnswersArray.size() / 2));
-                            if(audienceJoker) {
+                            if (audienceJoker) {
                                 addPercentages(answerArray, levelQuestion.getAnswer());
                             }
                             jokers.remove("50/50 Joker");
@@ -213,7 +213,7 @@ public class Logic {
                     } else {
                         // Use user input index to compare user answer to correct answer
                         String pickedAnswer = answerArray.get(userAnswerIndex - 1);
-                        if(audienceJoker) {
+                        if (audienceJoker) {
                             pickedAnswer = pickedAnswer.split(",")[0];
                         }
                         if (levelQuestion.getAnswer().equalsIgnoreCase(pickedAnswer)) {
@@ -233,7 +233,7 @@ public class Logic {
 
                 // Use user input index to compare user answer to correct answer
                 String pickedAnswer = answerArray.get(userAnswerIndex - 1);
-                if(audienceJoker) {
+                if (audienceJoker) {
                     pickedAnswer = pickedAnswer.split(",")[0];
                 }
                 if (levelQuestion.getAnswer().equalsIgnoreCase(pickedAnswer)) {
@@ -265,23 +265,23 @@ public class Logic {
         int sum = 0;
         //Makes it so that the sum auf all Numebers in the Array equal 100
         for (int k = 0; k < answerArray.size(); k++) {
-            percentages[k] = (percentages[k]*100)/percentagesSum;
+            percentages[k] = (percentages[k] * 100) / percentagesSum;
             sum += percentages[k];
         }
         //Sorts the Array
         Arrays.sort(percentages);
         //Picks the largest or second largest Number for the correct Answer
         int correctIndex = percentages.length - (1 + random.nextInt(2));
-        int answerIndex = answerArray.size()-1;
+        int answerIndex = answerArray.size() - 1;
         //Adds the rounding Errors to the correct Percentage
         percentages[correctIndex] += (100 - sum);
         //Matches the Questions to a Percantage
         for (int j = 0; j < answerArray.size(); j++) {
             String answer = answerArray.get(j);
-            if(answer.equals(correctQuestion)) {
+            if (answer.equals(correctQuestion)) {
                 answerIndex = j;
                 answerArray.set(j, String.format("%s,    %d%%", answer, percentages[correctIndex]));
-            } else if(j == correctIndex) {
+            } else if (j == correctIndex) {
                 answerArray.set(j, String.format("%s,    %d%%", answer, percentages[answerIndex]));
             } else {
                 answerArray.set(j, String.format("%s,    %d%%", answer, percentages[j]));
@@ -438,7 +438,7 @@ public class Logic {
     //Laesst den Nutzer eine Kategorie umbenennen
     private void renameCategory(String category) {
         String newName = HelperClass.getInputText("Neuer Name für die Kategorie: ");
-        while (categories.keySet().contains(newName)) {
+        while (categories.containsKey(newName)) {
             System.out.println("Es gibt bereits eine Katergorie mit diesem Namen!");
             newName = HelperClass.getInputText("Neuer Name für die Kategorie: ");
         }

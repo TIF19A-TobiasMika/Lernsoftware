@@ -190,7 +190,7 @@ public class HelperClass {
             System.out.println("Frage: " + q.getQuestion() + " Wrongs: " + q.getWrongAnswersPercent());
         }*/
         for (int i = 0; i < 15; i++) {
-            List<Question> levelQuestions = selectedQuestions.subList(i*questionsPerLevel, (i+1) * questionsPerLevel);
+            List<Question> levelQuestions = selectedQuestions.subList(i * questionsPerLevel, (i + 1) * questionsPerLevel);
             levels[i] = levelQuestions.get(Logic.random.nextInt(levelQuestions.size()));
         }
         /*System.out.println("-------Levels----------");
