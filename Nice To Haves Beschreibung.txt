@@ -12,3 +12,5 @@ Umfangreiche Fragenbearbeitung zum:
 	- Bearbeiten von Fragen/Kategorien
 	- Löschen von Fragen/Kategorien
 	- Statistiken von einzelnen Fragen zurücksetzen
+
+Verschiedene Spielmodi
