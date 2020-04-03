@@ -726,7 +726,9 @@ public class Logic {
                 case 3: highScores.printSurvivalStats(); break;
                 case 4: highScores.printMillionaireStats(); break;
                 case 5: highScores.printHardStats(); break;
-                case 6: highScores.reset(HelperClass.simpleMenu("Welche Statistiken sollen zurueckgestetzt werden?", "?: ", "Alle", "Normal", "Ueberlebensmodus", "Wer wird Millionaer", "Fragen mit meisten Fehlern")); break;
+                case 6: highScores.reset(HelperClass.simpleMenu("Welche Statistiken sollen zurueckgestetzt werden?", "?: ", "Alle", "Normal", "Ueberlebensmodus", "Wer wird Millionaer", "Fragen mit meisten Fehlern"));
+                        JsonHelper.saveHighScores(highScores);
+                        break;
             }
         } else if (userInput == 5) {
             for (ArrayList<Question> category : categories.values()) {
