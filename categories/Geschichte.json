@@ -7,7 +7,7 @@
       "10 Jahre",
       "1 Jahr"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 7
   },
   {
@@ -18,7 +18,7 @@
       "01. Januar 1940",
       "03. August 1939"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 2
   },
   {
@@ -41,7 +41,7 @@
       "Bering",
       "Cook"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 2,
     "wrongAnswers": 8
   },
   {
@@ -76,12 +76,12 @@
     "question": "In welchem Jahr war der Mauerfall?",
     "answer": "1989",
     "correctAnswers": 0,
-    "wrongAnswers": 7
+    "wrongAnswers": 8
   },
   {
     "question": "In welchem Jahr wurde der Euro als Bargeld eingefuehrt?",
     "answer": "2002",
     "correctAnswers": 0,
-    "wrongAnswers": 0
+    "wrongAnswers": 2
   }
 ]

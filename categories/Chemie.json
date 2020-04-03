@@ -1,0 +1,113 @@
+[
+  {
+    "question": "Was ist das Elementsymbol für Chlor",
+    "answer": "Cl",
+    "alternateAnswers": [
+      "Ch",
+      "C",
+      "Cr"
+    ],
+    "correctAnswers": 1,
+    "wrongAnswers": 3
+  },
+  {
+    "question": "Welches Element hat die Ordnungszahl 4?",
+    "answer": "Beryllium",
+    "alternateAnswers": [
+      "Helium",
+      "Bor",
+      "Lithium"
+    ],
+    "correctAnswers": 3,
+    "wrongAnswers": 3
+  },
+  {
+    "question": "Bei welcher Temperatur wird (unter Normaldruck) Luft flüssig?",
+    "answer": "-213°C",
+    "alternateAnswers": [
+      "0,15K",
+      "-98°C",
+      "-213°C",
+      "bei keiner"
+    ],
+    "correctAnswers": 0,
+    "wrongAnswers": 2
+  },
+  {
+    "question": "Was ist ein Positron?",
+    "answer": "Antiteilchen des Elektrons",
+    "alternateAnswers": [
+      "Antiteilchen des Neutrons",
+      "Antiteilchen des Protons",
+      "Protons"
+    ],
+    "correctAnswers": 4,
+    "wrongAnswers": 0
+  },
+  {
+    "question": "Welches Element hat die Ordnungszahl 7?",
+    "answer": "Stickstoff",
+    "alternateAnswers": [
+      "Bor",
+      "Kohlenstoff",
+      "Sauerstoff"
+    ],
+    "correctAnswers": 2,
+    "wrongAnswers": 13
+  },
+  {
+    "question": "Welches Elementsymbol hat Platin?",
+    "answer": "Pt",
+    "alternateAnswers": [
+      "P",
+      "Pn",
+      "Pn"
+    ],
+    "correctAnswers": 2,
+    "wrongAnswers": 5
+  },
+  {
+    "question": "Welche Ordnungszahl hat Arsen?",
+    "answer": "33",
+    "alternateAnswers": [
+      "11",
+      "22",
+      "44"
+    ],
+    "correctAnswers": 14,
+    "wrongAnswers": 11
+  },
+  {
+    "question": "Was ist das Elementsymbol von Kohlenstoff ?",
+    "answer": "C",
+    "alternateAnswers": [
+      "K",
+      "Co",
+      "Ko"
+    ],
+    "correctAnswers": 14,
+    "wrongAnswers": 7
+  },
+  {
+    "question": "Woraus besteht ein Diamant?",
+    "answer": "Aus reinem Kohlenstoff",
+    "alternateAnswers": [
+      "aus Siliziumdioxid",
+      "aus Kobalt",
+      "aus reinem Schwefel"
+    ],
+    "correctAnswers": 3,
+    "wrongAnswers": 7
+  },
+  {
+    "question": "Wann wurde das heute übliche Periodensystem der Elemente entwickelt?",
+    "answer": "Im 19. Jahrhundert",
+    "alternateAnswers": [
+      "Im Mittelalter durch Alchemisten",
+      "Im 18. Jahrhundert",
+      "Im 17. Jahrhundert"
+    ],
+    "correctAnswers": 14,
+    "wrongAnswers": 3
+  }
+]

@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 public class Logic {
 
     private final HashMap<String, ArrayList<Question>> categories;
+    private final HighScores highScores;
     private final String[] mainMenuChoices;
     private final String[] statisticChoices;
     private final String[] gameModes;
@@ -13,10 +14,14 @@ public class Logic {
     static final Random random = new Random();
 
     public Logic() {
-        categories = JsonHelper.ReturnQuestionsAndCategories();
+        categories = JsonHelper.returnQuestionsAndCategories();
+        highScores = JsonHelper.loadHighScores();
+        if(categories == null || categories.size() <= 0) {
+            System.err.println("keine Kategorien gefunden");
+        }
 
         mainMenuChoices = new String[]{"Spielen", "Bearbeitungsmodus", "Statistiken", "Beenden"};
-        statisticChoices = new String[]{"Allgemein", "Fragenspezifisch", "Kategoriespezifisch", "Statistiken zurücksetzten"};
+        statisticChoices = new String[]{"Allgemein", "Fragen Spezifisch", "Kategorie Spezifisch", "Spielmodus Spezifisch", "Statistiken zurücksetzten"};
         gameModes = new String[]{"Normal", "Ueberlebensmodus", "Wer wird Millionaer", "Fragen mit meisten Fehlern"};
         millionaireLevels = new int[]{50, 100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 500000, 1000000};
     }
@@ -70,6 +75,7 @@ public class Logic {
                 break;
             case 3:
                 playMillionaireQuiz();
+                JsonHelper.saveAllCategoriesToFile(categories);
                 break;
             case 4:
                 playQuiz(true);
@@ -81,6 +87,12 @@ public class Logic {
     private void saveCategories() {
         for (String category : categoriesToSave) {
             JsonHelper.saveQuestionsToFile(categories.get(category), category);
+        }
+    }
+
+    private void saveHighScores() {
+        if(!JsonHelper.saveHighScores(highScores)) {
+            System.out.println("Achtung dein neuer Score konnte nicht in der Datei gespeichert werden");
         }
     }
 
@@ -116,6 +128,12 @@ public class Logic {
         }
         System.out.println("Sie haben " + correctQuestions + " von " + numberOfQuestions + " Fragen richtig beantwortet!");
 
+        if(mostWrong) {
+            highScores.addHardScore((correctQuestions*100) / numberOfQuestions);
+        } else {
+            highScores.addNormalScore((correctQuestions*100) / numberOfQuestions);
+        }
+        saveHighScores();
         //Speichert die Fragen in den Kategorien aus categoriesToSave (fuer die Statistik)
         saveCategories();
     }
@@ -151,6 +169,8 @@ public class Logic {
             System.out.println("Glueckwunsch sie sind einmal alle Fragen durch, ab jetzt wiederholen sich Fragen");
         }
         System.out.println("Sie haben " + correctQuestions + " Fragen richtig beantwortet!");
+        highScores.addSurvivalScore(correctQuestions);
+        saveHighScores();
         //Speichert alle Fragen bzw. deren neue Statistik
         JsonHelper.saveAllCategoriesToFile(categories);
     }
@@ -224,7 +244,8 @@ public class Logic {
                             System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + levelQuestion.getAnswer() + "'.");
                             levelQuestion.addToWrongAnswer(1);
                             System.out.println("Damit haben sie leider Verloren, bis zum naechsten Mal");
-
+                            highScores.addToMillionaireScores(millionaireLevels[i]);
+                            saveHighScores();
                             return;
                         }
                     }
@@ -243,13 +264,18 @@ public class Logic {
                     System.out.println("Falsche Antwort! Die richtige Antwort lautet: '" + levelQuestion.getAnswer() + "'.");
                     System.out.println("Damit haben sie leider Verloren, bis zum naechsten Mal");
                     levelQuestion.addToWrongAnswer(1);
+                    highScores.addToMillionaireScores(millionaireLevels[i]);
+                    saveHighScores();
                     return;
                 }
             } else {
                 System.err.println("Hier sollten keine Input Fragen vorkommen!");
             }
         }
-        System.out.println("Herrzlichen Glueckwunsch sie haben alle " + millionaireLevels.length + " Fragen Richtig beantwortet und die 1.000.000€ gewonnen!");
+        int finalLevel = millionaireLevels[millionaireLevels.length-1];
+        System.out.println(String.format("Herrzlichen Glueckwunsch sie haben alle %d Fragen Richtig beantwortet und die %d€ gewonnen!", millionaireLevels.length, finalLevel));
+        highScores.addToMillionaireScores(finalLevel);
+        saveHighScores();
         JsonHelper.saveAllCategoriesToFile(categories);
     }
 
@@ -693,6 +719,16 @@ public class Logic {
                 }
             }
         } else if (userInput == 4) {
+            int userChoice = HelperClass.simpleMenu("Fuer welchen Spielmodus moechtest du Statistiken sehen?", "Auswahl: ", "Alle (ZusammenFassung)", "Normal", "Ueberlebensmodus", "Wer wird Millionaer", "Fragen mit meisten Fehlern", "Zuruecksetzten");
+            switch (userChoice) {
+                case 1: highScores.printStats(); break;
+                case 2: highScores.printNormalStats(); break;
+                case 3: highScores.printSurvivalStats(); break;
+                case 4: highScores.printMillionaireStats(); break;
+                case 5: highScores.printHardStats(); break;
+                case 6: highScores.reset(HelperClass.simpleMenu("Welche Statistiken sollen zurueckgestetzt werden?", "?: ", "Alle", "Normal", "Ueberlebensmodus", "Wer wird Millionaer", "Fragen mit meisten Fehlern")); break;
+            }
+        } else if (userInput == 5) {
             for (ArrayList<Question> category : categories.values()) {
                 for (Question q : category) {
                     q.resetStats();

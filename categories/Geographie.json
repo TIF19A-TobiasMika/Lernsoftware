@@ -7,7 +7,7 @@
       "Deutschland",
       "Russland"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 2,
     "wrongAnswers": 0
   },
   {
@@ -18,7 +18,7 @@
       "Bahamas",
       "Syrien"
     ],
-    "correctAnswers": 1,
+    "correctAnswers": 3,
     "wrongAnswers": 0
   },
   {
@@ -29,7 +29,7 @@
       "Russland",
       "Alaska"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 1,
     "wrongAnswers": 0
   },
   {
@@ -52,8 +52,8 @@
       "Quebec",
       "Chicago"
     ],
-    "correctAnswers": 0,
-    "wrongAnswers": 0
+    "correctAnswers": 1,
+    "wrongAnswers": 1
   },
   {
     "question": "In welchem Land liegt der Vesuv?",
@@ -69,7 +69,7 @@
       "Great Barrier Reef",
       "Niagara Falls"
     ],
-    "correctAnswers": 1,
+    "correctAnswers": 3,
     "wrongAnswers": 0
   },
   {
@@ -87,6 +87,100 @@
     "question": "Stockholm ist die Hauptstadt von ...?",
     "answer": "Schweden",
     "correctAnswers": 0,
+    "wrongAnswers": 1
+  },
+  {
+    "question": "Was ist die Hauptstadt von Angola?",
+    "answer": "Luanda",
+    "alternateAnswers": [
+      "Baku",
+      "Kairo",
+      "Berlin"
+    ],
+    "correctAnswers": 2,
     "wrongAnswers": 0
+  },
+  {
+    "question": "Was ist die Hauptstadt von Estland?",
+    "answer": "Tallinn",
+    "alternateAnswers": [
+      "Paris",
+      "Moskau",
+      "Banjul"
+    ],
+    "correctAnswers": 3,
+    "wrongAnswers": 8
+  },
+  {
+    "question": "Was ist die Hauptstadt von Indonesien?",
+    "answer": "Jakarta",
+    "alternateAnswers": [
+      "Teheran",
+      "Nairobi",
+      "Banjul"
+    ],
+    "correctAnswers": 1,
+    "wrongAnswers": 34
+  },
+  {
+    "question": "Was ist die Hauptstadt von Kroatien?",
+    "answer": "Zagreb",
+    "alternateAnswers": [
+      "Tallinn",
+      "Moskau",
+      "Maseru"
+    ],
+    "correctAnswers": 34,
+    "wrongAnswers": 2
+  },
+  {
+    "question": "Was ist die Hauptstadt von Monaco?",
+    "answer": "Monaco",
+    "alternateAnswers": [
+      "Palikir",
+      "Bruessel",
+      "Wien"
+    ],
+    "correctAnswers": 35,
+    "wrongAnswers": 1
+  },
+  {
+    "question": "Was ist die Hauptstadt der Schweiz?",
+    "answer": "Bern",
+    "alternateAnswers": [
+      "Zürich",
+      "Belgrad",
+      "Wien"
+    ],
+    "correctAnswers": 23,
+    "wrongAnswers": 42
+  },
+  {
+    "question": "Welches der folgenden ist das flächenmäßig kleinste Bundesland?",
+    "answer": "Saarland",
+    "alternateAnswers": [
+      "Sachsen",
+      "Niedersachsen",
+      "Bayern"
+    ],
+    "correctAnswers": 3,
+    "wrongAnswers": 4
+  },
+  {
+    "question": "Welcher See liegt nicht in Bayern?",
+    "answer": "Schweriner See",
+    "alternateAnswers": [
+      "Ammersee",
+      "Starnberger See",
+      "Chiemsee"
+    ],
+    "correctAnswers": 13,
+    "wrongAnswers": 2
+  },
+  {
+    "question": "In welcher Stadt steht das Reichstagsgebäude?",
+    "answer": "Berlin",
+    "correctAnswers": 32,
+    "wrongAnswers": 44
   }
 ]

@@ -24,7 +24,7 @@ public class JsonHelper {
         }
     }
 
-    static HashMap<String, ArrayList<Question>> ReturnQuestionsAndCategories() {
+    static HashMap<String, ArrayList<Question>> returnQuestionsAndCategories() {
         File dir = new File("categories");
         if (dir.isDirectory()) {
             HashMap<String, ArrayList<Question>> categories = new HashMap<>();
@@ -53,6 +53,10 @@ public class JsonHelper {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
+        } else {
+            System.err.println("Error categories Folder not found");
+            System.err.println("Plese create Folder " + dir.getAbsolutePath() + " with the category files");
+            System.exit(1);
         }
         return null;
     }
@@ -94,6 +98,38 @@ public class JsonHelper {
             }
             return true;
         } else {
+            return false;
+        }
+    }
+
+    public static HighScores loadHighScores() {
+        try {
+            JsonReader jsonReader = new JsonReader(new FileReader(new File("highScores.json")));
+            Gson gson = new Gson();
+            HighScores highScores = gson.fromJson(jsonReader, new TypeToken<HighScores>() {
+            }.getType());
+            jsonReader.close();
+            return highScores;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new HighScores(new HashMap<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        }
+    }
+
+    static boolean saveHighScores(HighScores scores) {
+        //questions.stream().forEach(System.out::println);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
+        String json = gson.toJson(scores, new TypeToken<HighScores>() {
+        }.getType());
+        //Write JSON file
+        try (FileWriter file = new FileWriter("highScores.json")) {
+            file.write(json);
+            file.flush();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }

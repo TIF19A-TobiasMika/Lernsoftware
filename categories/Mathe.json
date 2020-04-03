@@ -19,13 +19,13 @@
       "Die Zahl Pi",
       "Den Durchschnittswert einer Funktion"
     ],
-    "correctAnswers": 1,
+    "correctAnswers": 5,
     "wrongAnswers": 0
   },
   {
     "question": "Was ist die Wurzel von 25?",
     "answer": "5",
-    "correctAnswers": 1,
+    "correctAnswers": 2,
     "wrongAnswers": 0
   },
   {
@@ -42,7 +42,7 @@
       "Nur ungerade Zahlen duerfen dividiert werden",
       "Das Ergebnis ist groesser als 2"
     ],
-    "correctAnswers": 0,
+    "correctAnswers": 3,
     "wrongAnswers": 1
   },
   {
@@ -53,14 +53,14 @@
       "(a-b)*(a-b)\u003da^2-b^2",
       "a+b \u003d a*b"
     ],
-    "correctAnswers": 0,
-    "wrongAnswers": 0
+    "correctAnswers": 1,
+    "wrongAnswers": 1
   },
   {
     "question": "Was ergibt 20*4+5?",
     "answer": "85",
     "correctAnswers": 0,
-    "wrongAnswers": 1
+    "wrongAnswers": 3
   },
   {
     "question": "Was ergibt Wurzel 2 * Wurzel 2?",

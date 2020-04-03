@@ -184,19 +184,20 @@ public class HelperClass {
 
     public static Question[] createMillionaireLevels(ArrayList<Question> selectedQuestions, int levelNum) {
         selectedQuestions.sort(Comparator.comparingInt(Question::getWrongAnswersPercent));
-        int questionsPerLevel = selectedQuestions.size() / levelNum;
+        double questionsPerLevel = (double) selectedQuestions.size() / levelNum;
+        //System.out.println("Total: " + selectedQuestions.size() + " Per Level: " + questionsPerLevel);
         Question[] levels = new Question[levelNum];
-        /*for (Question q : selectedQuestions) {
-            System.out.println("Frage: " + q.getQuestion() + " Wrongs: " + q.getWrongAnswersPercent());
-        }*/
         for (int i = 0; i < 15; i++) {
-            List<Question> levelQuestions = selectedQuestions.subList(i * questionsPerLevel, (i + 1) * questionsPerLevel);
+            int startIndex = (int) (i * questionsPerLevel);
+            int endIndex = (int) ((i + 1) * questionsPerLevel);
+            List<Question> levelQuestions = selectedQuestions.subList(startIndex, endIndex);
             levels[i] = levelQuestions.get(Logic.random.nextInt(levelQuestions.size()));
+            /*System.out.print("Level: " + i + " StartI: " + startIndex + " EndI: " + endIndex + "[");
+            for(Question q : levelQuestions) {
+                System.out.print("," + q.getQuestion() + " (" + q.getWrongAnswersPercent() + ")");
+            }
+            System.out.println("] Picked: " + levels[i].getQuestion());*/
         }
-        /*System.out.println("-------Levels----------");
-        for(Question q : levels) {
-            System.out.println("Frage: " + q.getQuestion() + " Wrongs: " + q.getWrongAnswersPercent());
-        }*/
         return levels;
     }
 }
